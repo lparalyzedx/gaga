@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\back;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\NewsCreateRequest;
-use App\Http\Requests\NewsUpdateRequest;
-use App\Models\News;
-use App\Models\NewsImage;
+use App\Http\Requests\ArticleCreateRequest;
+use App\Models\Article;
+use App\Models\Articleimage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
-class NewsController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +19,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::orderBy('id', 'DESC')->paginate(4);
-        return view('back.pages.news.index', compact('news'));
+        //
     }
 
     /**
@@ -31,7 +29,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view('back.pages.news.add');
+        //
     }
 
     /**
@@ -40,42 +38,43 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(NewsCreateRequest $request)
+    public function store(ArticleCreateRequest $request)
     {
+        $request->merge(['slug' => Str::slug($request->title)]);
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension();
             $file_name = Str::slug($request->title, '-') . '_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
-            Storage::putFileAs('public/news', $file, $file_name);
+            Storage::putFileAs('public/articles', $file, $file_name);
             $request->merge(['image' => $file_name]);
         }
 
-        $news = News::create([
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
-            'description' => $request->description,
-            'image' => $file_name,
-        ]);
+        $article = Article::create($request->post());
 
         if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
                 $extension = $image->getClientOriginalExtension();
                 $originalName = $image->getClientOriginalName();
-                $path = 'public/news';
+                $path = 'public/articles';
                 $name = explode('.', $originalName);
                 $fileName = Str::slug($name[0], '-') . '-is' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
                 Storage::putFileAs($path, $image, $fileName);
 
-                Newsimage::create(
+                Articleimage::create(
                     [
-                        'news_id' => $news->id,
+                        'article_id' => $article->id,
                         'image' => $fileName
                     ]
                 );
             }
         }
-        return redirect()->route('admin.haberler.index');
+
+        if ($request->from == 'studio') {
+            return redirect()->route('admin.atolye.index');
+        } else {
+            dd('blog');
+        }
     }
 
     /**
@@ -86,16 +85,16 @@ class NewsController extends Controller
      */
     public function status(Request $request)
     {
-        $news = News::find($request->id) ?? abort(403, 'Haber bulunamadı.');
+        $article = Article::find($request->id) ?? abort(403, 'Makale bulunamadı.');
 
-        if ($news->status == '1') {
+        if ($article->status == '1') {
             $status = '0';
         } else {
             $status = '1';
         }
 
-        $news->status = $status;
-        $news->save();
+        $article->status = $status;
+        $article->save();
 
         return response()->json([
             'status' => $status
@@ -108,11 +107,7 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        $new = News::find($id) ?? abort(404);
-        return view('back.pages.news.edit', compact('new'));
-    }
+   
 
     /**
      * Update the specified resource in storage.
@@ -121,41 +116,44 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(NewsUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $news = News::whereId($id);
+        $article= Article::find($id);
+        $request->merge(['slug' => Str::slug($request->title)]);
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension();
             $file_name = Str::slug($request->title, '-') . '_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
-            Storage::putFileAs('public/news', $file, $file_name);
-            $news->update(['image' => $file_name]);
+            Storage::putFileAs('public/articles', $file, $file_name);
+            $request->merge(['image' => $file_name]);
         }
 
-        $news->update([
-           'title' => $request->title,
-           'slug' => Str::slug($request->title),
-           'description' => $request->description
-        ]);
+        $article->update($request->post());
+
 
         if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
                 $extension = $image->getClientOriginalExtension();
                 $originalName = $image->getClientOriginalName();
-                $path = 'public/news';
+                $path = 'public/articles';
                 $name = explode('.', $originalName);
                 $fileName = Str::slug($name[0], '-') . '-is' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
                 Storage::putFileAs($path, $image, $fileName);
 
-                Newsimage::find($id)->create(
+                Articleimage::whereId($id)->update(
                     [
                         'image' => $fileName
                     ]
                 );
             }
         }
-        return redirect()->route('admin.haberler.index');
+
+        if ($request->from == 'studio') {
+            return redirect()->route('admin.atolye.index');
+        } else {
+            dd('blog');
+        }
     }
 
     /**
@@ -166,13 +164,13 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        $new = News::find($id);
+        $article = Article::find($id);
 
-        if (Storage::exists('public/news', $new->image)) {
-            Storage::delete('public/news/' . $new->image);
+        if (Storage::exists('public/articles', $article->image)) {
+            Storage::delete('public/articles/' . $article->image);
         }
-
-        $new->delete();
+        
+        $article->delete();
 
         return redirect()->back();
     }

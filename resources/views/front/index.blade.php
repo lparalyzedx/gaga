@@ -16,29 +16,15 @@
 
   <div class="owl-carousel p-0 m-0">
 
-    <div class="hero w-full h-[1080px] flex flex-col items-center justify-center" style="background-image: url('{{asset('front/images/banner.png')}}')">
+    @foreach ($slides as $slide)
+    <div class="hero w-full h-[1080px] flex flex-col items-center justify-center" style="background-image: url('{{asset('storage/slides/'.$slide->image)}}')">
       <div class="text text-center">
-        <h1 class="text-white text-3xl md:text-5xl">GAGA</h1>
-        <h2 class="text-white text-5xl md:text-8xl newyork-font">Öğrencilerini <br> Bekliyor</h2>
+        <h1 class="text-white text-3xl md:text-5xl">{{$slide->title}}</h1>
+        <h2 class="text-white text-5xl md:text-8xl newyork-font">{{$slide->text}}</h2>
         
       </div>
     </div>
-
-    <div class="hero w-full h-[1080px] flex flex-col items-center justify-center" style="background-image: url('{{asset('front/images/banner.png')}}')">
-      <div class="text text-center">
-        <h1 class="text-white text-3xl md:text-5xl">GAGA</h1>
-        <h2 class="text-white text-5xl md:text-8xl newyork-font">Öğrencilerini</h2>
-        <h2 class="text-white text-5xl md:text-8xl newyork-font">Bekliyor 2</h2>
-      </div>
-    </div>
-
-    <div class="hero w-full h-[1080px] flex flex-col items-center justify-center" style="background-image: url('{{asset('front/images/banner.png')}}')">
-      <div class="text text-center">
-        <h1 class="text-white text-3xl md:text-5xl">GAGA</h1>
-        <h2 class="text-white text-5xl md:text-8xl newyork-font">Öğrencilerini</h2>
-        <h2 class="text-white text-5xl md:text-8xl newyork-font">Bekliyor 3</h2>
-      </div>
-    </div>
+    @endforeach
   </div>
 </div>
 

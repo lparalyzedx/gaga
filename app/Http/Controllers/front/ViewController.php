@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Models\HomePage;
 use Illuminate\Http\Request;
 
 class ViewController extends Controller
 {
     public function index()
     {
-        return view('front.index');
+        $slides = HomePage::where('status',1)->get();
+        return view('front.index',compact('slides'));
     }
 
     public function team()

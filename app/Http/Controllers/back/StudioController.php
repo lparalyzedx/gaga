@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\back;
 
+use App\Http\Controllers\Controller;
+use App\Models\Article;
+use App\Models\Categorie;
 use Illuminate\Http\Request;
 
-class HomePageController extends Controller
+class StudioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +16,12 @@ class HomePageController extends Controller
      */
     public function index()
     {
-        //
+      $articles= Article::with('category')->whereHas('category',function($query)
+      {
+        $query->where('visibility','studio');
+      })->paginate(5);
+
+      return view('back.pages.studio.index',compact('articles'));
     }
 
     /**
@@ -23,7 +31,8 @@ class HomePageController extends Controller
      */
     public function create()
     {
-        //
+       $categories = Categorie::where('visibility','studio')->get();
+       return view('back.pages.studio.add',compact('categories'));
     }
 
     /**
@@ -56,7 +65,11 @@ class HomePageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $article = Article::find($id)->with('category')->first() ?? abort(404);
+
+        $categories = Categorie::where('visibility','studio')->get();
+
+        return view('back.pages.studio.edit',compact('article','categories'));
     }
 
     /**

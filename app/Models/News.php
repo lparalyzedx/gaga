@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     use HasFactory;
-    protected $guarded= ['_token','_method'];
+    protected $guarded= [];
+
+    public function image()
+    {
+        $this->hasMany('App\Models\NewsImage','news_id','id');
+    }
 }

@@ -27,9 +27,9 @@ class NewsCreateRequest extends FormRequest
         return [
             'title' => 'required|min:5|max:255|unique:news,title',
             'description' => 'required|min:5',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg',
             'images' => 'nullable',
-            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'images.*' => 'image|mimes:jpeg,png,jpg'
         ];
     }
 

@@ -138,13 +138,13 @@
               <span class="nav-profile-name">{{auth()->user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
+              <a class="dropdown-item" href="{{route('admin.password')}}">
                 <i class="mdi mdi-settings text-primary"></i>
-                Settings
+                Şifreyi değiştir
               </a>
-              <a class="dropdown-item">
+              <a class="dropdown-item" href="{{route('admin.logout')}}">
                 <i class="mdi mdi-logout text-primary"></i>
-                Logout
+                Çıkış yap
               </a>
             </div>
           </li>
@@ -159,7 +159,7 @@
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
-          <li class="nav-item">
+          <li class="nav-item {{Request::segment(2) == '' ? 'active' : ''}}">
             <a class="nav-link" href="{{route('admin.index')}}">
               <i class="mdi mdi-home menu-icon"></i>
               <span class="menu-title">Anasayfa</span>
@@ -183,44 +183,34 @@
               <span class="menu-title">Ekibimiz</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item {{Request::segment(2) == 'haberler' ? 'active' : ''}} ">
             <a class="nav-link" href="{{route('admin.haberler.index')}}">
               <i class="mdi mdi-newspaper menu-icon"></i>
               <span class="menu-title">Haberler</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pages/tables/basic-table.html">
-              <i class="mdi mdi-grid-large menu-icon"></i>
-              <span class="menu-title">Tables</span>
+          <li class="nav-item {{Request::segment(2) == 'egitimler' ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('admin.egitimler.index')}}">
+              <i class="mdi mdi-grease-pencil menu-icon"></i>
+              <span class="menu-title">Eğitimler</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pages/icons/mdi.html">
-              <i class="mdi mdi-emoticon menu-icon"></i>
-              <span class="menu-title">Icons</span>
+          <li class="nav-item {{Request::segment(2) == 'kategoriler' ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('admin.kategoriler.index')}}">
+              <i class="mdi mdi-image-filter-none menu-icon"></i>
+              <span class="menu-title">Kategoriler</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">User Pages</span>
-              <i class="menu-arrow"></i>
+          <li class="nav-item {{Request::segment(2) == 'atolye' ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('admin.atolye.index')}}">
+              <i class="mdi mdi-book-open-variant menu-icon"></i>
+              <span class="menu-title">Atölye</span>
             </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Login 2 </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/register-2.html"> Register 2 </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/lock-screen.html"> Lockscreen </a></li>
-              </ul>
-            </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="documentation/documentation.html">
-              <i class="mdi mdi-file-document-box-outline menu-icon"></i>
-              <span class="menu-title">Documentation</span>
+          <li class="nav-item {{Route::is('admin.ayarlar.index') ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('admin.ayarlar.index')}}">
+              <i class="mdi mdi-settings menu-icon"></i>
+              <span class="menu-title">Ayarlar</span>
             </a>
           </li>
         </ul>
