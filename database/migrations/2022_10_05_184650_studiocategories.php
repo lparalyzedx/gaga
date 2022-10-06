@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('articleimages', function (Blueprint $table) {
-            $table->string('image');
-            $table->unsignedBigInteger('article_id');
-            $table->foreign('article_id')
-            ->references('id')
-            ->on('articles')
-            ->onDelete('cascade');
+        Schema::create('studiocategories', function (Blueprint $table) {
+            $table->string('name');
+            $table->string('slug');
             $table->id();
             $table->timestamps();
         });
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('articleimages');
+        Schema::dropIfExists('studiocategories');
     }
 };

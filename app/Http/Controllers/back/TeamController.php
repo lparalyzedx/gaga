@@ -41,6 +41,9 @@ class TeamController extends Controller
     public function store(PeopleCreateRequest $request)
     {
         $people = new People;
+
+        $request->merge(['slug' => Str::slug($request->name)]);
+
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension();
@@ -101,6 +104,9 @@ class TeamController extends Controller
     public function update(Request $request, $id)
     {
         $people = People::find($id) ?? abort(404);
+
+        $request->merge(['slug' => Str::slug($request->name)]);
+
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension();

@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\back;
 
 use App\Http\Controllers\Controller;
-use App\Models\Article;
-use App\Models\Categorie;
+use App\Http\Requests\ArticleCreateRequest;
+use App\Http\Requests\ArticleUpdateRequest;
+use App\Models\Articleimage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use App\Models\StudioArticle;
+use App\Models\Studiocategorie;
 
 class StudioController extends Controller
 {
@@ -16,12 +21,8 @@ class StudioController extends Controller
      */
     public function index()
     {
-      $articles= Article::with('category')->whereHas('category',function($query)
-      {
-        $query->where('visibility','studio');
-      })->paginate(5);
-
-      return view('back.pages.studio.index',compact('articles'));
+        $articles = StudioArticle::with('category')->orderBy('id', 'DESC')->get();
+        return view('back.pages.studio.index', compact('articles'));
     }
 
     /**
@@ -31,8 +32,8 @@ class StudioController extends Controller
      */
     public function create()
     {
-       $categories = Categorie::where('visibility','studio')->get();
-       return view('back.pages.studio.add',compact('categories'));
+        $categories = Studiocategorie::orderBy('id','DESC')->get();
+        return view('back.pages.studio.add',compact('categories'));
     }
 
     /**
@@ -41,9 +42,42 @@ class StudioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleCreateRequest $request)
     {
-        //
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $file_name = Str::slug($request->title, '-') . 'studio_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+            Storage::putFileAs('public/articles', $file, $file_name);
+            $request->merge(['image' => $file_name]);
+        }
+
+        $article = StudioArticle::create([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description,
+            'image' => $file_name,
+        ]);
+
+        if ($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $extension = $image->getClientOriginalExtension();
+                $originalName = $image->getClientOriginalName();
+                $path = 'public/articles';
+                $name = explode('.', $originalName);
+                $fileName = Str::slug($name[0], '-') . '-studio' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                Storage::putFileAs($path, $image, $fileName);
+
+                Articleimage::create(
+                    [
+                        'article_id' => $article->id,
+                        'image' => $fileName
+                    ]
+                );
+            }
+        }
+        return redirect()->route('admin.atolye.index');
     }
 
     /**
@@ -52,9 +86,22 @@ class StudioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function status(Request $request)
     {
-        //
+        $article = StudioArticle::find($request->id) ?? abort(403, 'Haber bulunamadı.');
+
+        if ($article->status == '1') {
+            $status = '0';
+        } else {
+            $status = '1';
+        }
+
+        $article->status = $status;
+        $article->save();
+
+        return response()->json([
+            'status' => $status
+        ]);
     }
 
     /**
@@ -65,11 +112,9 @@ class StudioController extends Controller
      */
     public function edit($id)
     {
-        $article = Article::find($id)->with('category')->first() ?? abort(404);
-
-        $categories = Categorie::where('visibility','studio')->get();
-
-        return view('back.pages.studio.edit',compact('article','categories'));
+        $article = StudioArticle::find($id) ?? abort(404);
+        $categories = Studiocategorie::orderBy('id','DESC')->get();
+        return view('back.pages.studio.edit', compact('article','categories'));
     }
 
     /**
@@ -79,9 +124,36 @@ class StudioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ArticleUpdateRequest $request, $id)
     {
-        //
+        $article = StudioArticle::whereId($id);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $file_name = Str::slug($request->title, '-') . '_studio' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+            Storage::putFileAs('public/articles', $file, $file_name);
+            $article->update(['image' => $file_name]);
+        }
+        $article->update($request->only('title','description','status'));
+
+        if ($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $extension = $image->getClientOriginalExtension();
+                $originalName = $image->getClientOriginalName();
+                $path = 'public/articles';
+                $name = explode('.', $originalName);
+                $fileName = Str::slug($name[0], '-') . '-studio' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                Storage::putFileAs($path, $image, $fileName);
+
+                Articleimage::find($id)->update(
+                    [
+                        'image' => $fileName
+                    ]
+                );
+            }
+        }
+        return redirect()->route('admin.atolye.index');
     }
 
     /**
@@ -92,6 +164,14 @@ class StudioController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article = StudioArticle::find($id);
+
+        if (Storage::exists('public/articles', $article->image)) {
+            Storage::delete('public/articles/' . $article->image);
+        }
+
+        $article->delete();
+
+        return redirect()->back();
     }
 }

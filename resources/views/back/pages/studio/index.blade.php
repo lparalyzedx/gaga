@@ -42,7 +42,7 @@
                                         {{ $article->title }}
                                     </td>
                                     <td>
-                                        {{ $article->category->name }}
+                                        {{ $article->category->name ?? 'Günlük workshop' }}
                                     </td>
                                     <td>
                                         {!! Str::limit($article->description,30) !!}

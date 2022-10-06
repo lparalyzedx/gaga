@@ -1,26 +1,78 @@
 @extends('front.layouts.master')
-@section('title','Kurumsal')
+@section('title', 'Kurumsal')
 @section('content')
-<div class="head-menu w-full px-8 md:px-48 block bg-[#242424]">
-    <ul class="flex gap-2 md:gap-4">
-      <li><a href="" class="block text-sm md:text-lg leading-3 text-white py-8 px-4 bg-gradient-to-r from-[#791119] to-[#BE1724]">Hakkımızda</a></li>
-      <li><a href="" class="block text-sm md:text-lg leading-3 text-white py-8 px-4">Neden GAGA’yı tercih etmeliyim?</a></li>
-      <li><a href="" class="block text-sm md:text-lg leading-3 text-white py-8 px-4">Ekibimiz</a></li>
-    </ul>
-  </div>
+    <div class="head-menu w-full px-8 md:px-48 block bg-[#242424]">
+        <ul class="flex gap-2 md:gap-4">
+            <li><a href=""
+                    class="block text-sm md:text-lg leading-3 text-white py-8 px-4 bg-gradient-to-r from-[#791119] to-[#BE1724]"
+                    id="about">Hakkımızda</a></li>
+            <li><a href="" class="block text-sm md:text-lg leading-3 text-white py-8 px-4" id="whyus">Neden GAGA’yı
+                    tercih etmeliyim?</a></li>
+            <li><a href="" class="block text-sm md:text-lg leading-3 text-white py-8 px-4" id="team">Ekibimiz</a>
+            </li>
+        </ul>
+    </div>
 
-  <div class="content px-8 md:px-48  py-8 md:py-24 bg-[#1B1B1B]">
-    <h2 class="text-2xl text-white font-semibold">GAGA Hakkında</h2>
-    <p class="mt-8 text-white text-base leading-7">Dünyanın ilk yerleşim yerlerinden biri olan Dülük Antik Kentine, ticaretin merkezi Zeugma Antik Kentine, sanatın merkezi Yesemek Açık Hava Müzesine ev sahipliği yapan bu topraklarda sofralar, güneşin sıcağı ile olgunlaşan ve ateşin korunda pişen lezzetler ile kurulur. Bütün yemekler güneşin ve ateşin tadını adeta bir mühür gibi üzerinde taşır. <br /><br />
+    <div class="content px-8 md:px-48  py-8 md:py-24 bg-[#1B1B1B]">
 
-      Gaziantep Ticaret Odası olarak bu hazinenin mührünü açıp sırrına varmak, dünyanın dört bir yanındaki lezzet öyküleri ile harmanlayıp geleceğe ve uzak diyarlara taşımak, öğretmek ve geliştirmek isteği ile yola çıktık.<br /><br />
+        <div id="titles">
+            <h2 class="text-2xl text-white font-semibold" id="title">GAGA Hakkında</h2>
+            <p class="mt-8 text-white text-base leading-7" id="description">
+                {{ strip_tags($setting->company_description) }}</p>
+        </div>
+        <div class="content grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-16 px-8  bg-[#1B1B1B]" id="peoples">
+            @foreach ($peoples as $people)
+                <a href="{{ route('team.detail', $people->slug) }}">
+                    <div class="flex flex-col gap-4 group">
+                        <img src="{{ asset('storage/peoples/' . $people->image) }}" alt="{{ $people->name }}"
+                            class="rounded-2xl grayscale hover:grayscale-0 hover:-mt-8 transition-all duration-500">
+                        <h3 class="text-2xl text-white group-hover:text-[#BE1724]">{{ $people->name }}</h3>
+                        <span class="text-white font-medium">{{ $people->rank }}</span>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    </div>
+@endsection
 
-      Gaziantep Gastronomi Akademisi-GAGA da bu yoldaki çalışmalarımızın vücut bulmuş hali oldu.<br /><br />
+@section('js')
+    <script>
+        $('#peoples').hide();
+        $('#whyus').click(function(e) {
+            e.preventDefault();
+            $('#about').removeClass('bg-gradient-to-r from-[#791119] to-[#BE1724]');
+            $('#team').removeClass('bg-gradient-to-r from-[#791119] to-[#BE1724]');
+            $('#whyus').addClass('bg-gradient-to-r from-[#791119] to-[#BE1724]');
+            $('#title').text('Neden GAGA');
+            $('#description').html('{{ strip_tags($setting->whyus) }}');
+            $('#peoples').hide();
+            $('#titles').show();
 
-      Gaziantep Gastronomi Akademisi yani bilinen adıyla GAGA, 2022 yılında Gaziantep Ticaret Odasının bir kuruluşu olarak hizmete girmiştir. T.C. Milli Eğitim bakanlığına bağlı özel bir eğitim kurumudur.<br /><br />
+        });
 
-      GAGA kampüsünde profesyonel aşçılık ve pastacılık eğitimlerinin yanı sıra servis personeli, yiyecek-içecek işletmeciliği, temel fırıncılık ve pidecilik eğitimi, barmenlik ve iksoloji eğitimleri de verilecektir.<br /><br />
+        $('#about').click(function(e) {
+            e.preventDefault();
+            $('#whyus').removeClass('bg-gradient-to-r from-[#791119] to-[#BE1724]');
+            $('#team').removeClass('bg-gradient-to-r from-[#791119] to-[#BE1724]');
+            $('#about').addClass('bg-gradient-to-r from-[#791119] to-[#BE1724]');
+            $('#titles').show();
+            $('#title').text('GAGA Hakkında');
+            $('#description').html('{{ strip_tags($setting->company_description) }}');
+            $('#peoples').hide();
 
-      Ayrıca, uzun dönem aşçılık ve pastacılık eğitimi alanlar ve bu alanlarda bilgi ve becerilerini ispat edebilenlere yönelik olarak hazırlanan bir Master Class eğitim programı da bulunmaktadır. Bu Master Class eğitim programında kebapçılık, baklavacılık, kasaplık ve dünya mutfakları eğitimleri de (Japonya, Hindistan, Endonezya, Çin, Tayland, Kore, Fransa, İspanya, İtalya, Lübnan, Kuzey Afrika) verilecektir.</p>
-  </div>
-  @endsection
+        });
+
+        $('#team').click(function(e) {
+            e.preventDefault();
+            $('#about').removeClass('bg-gradient-to-r from-[#791119] to-[#BE1724]');
+            $('#whyus').removeClass('bg-gradient-to-r from-[#791119] to-[#BE1724]');
+            $('#team').addClass('bg-gradient-to-r from-[#791119] to-[#BE1724]');
+            $('#titles').hide();
+            $('#peoples').fadeIn()
+
+
+
+        });
+    </script>
+
+@endsection

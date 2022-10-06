@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\back\AdminController;
 use App\Http\Controllers\back\ArticleController;
-use App\Http\Controllers\back\CategorieController;
+use App\Http\Controllers\back\BlogController;
+use App\Http\Controllers\back\CampusController;
 use App\Http\Controllers\back\HomePageController;
 use App\Http\Controllers\back\NewsController;
 use App\Http\Controllers\back\SettingController;
@@ -10,7 +11,7 @@ use App\Http\Controllers\back\StudioController;
 use App\Http\Controllers\back\TeamController;
 use App\Http\Controllers\front\ViewController;
 use App\Http\Controllers\back\TrainingController;
-use App\Models\Training;
+use App\Models\Studiocategorie;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,16 +28,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('web')->group(function () {
     Route::get('/', [ViewController::class, 'index'])->name('index');
     Route::get('/ekibimiz', [ViewController::class, 'team'])->name('team');
+    Route::get('/ekibimiz/{slug}', [ViewController::class, 'team_detail'])->name('team.detail');
     Route::get('/kurumsal', [ViewController::class, 'company'])->name('company');
-    Route::get('/detay', [ViewController::class, 'team_detail'])->name('team.detail');
     Route::get('/atolye', [ViewController::class, 'studio'])->name('studio');
     Route::get('/egitimler', [ViewController::class, 'training'])->name('training');
     Route::get('/haberler', [ViewController::class, 'news'])->name('news');
-    Route::get('/haber-detay', [ViewController::class, 'news_detail'])->name('news.detail');
+    Route::post('haber',[ViewController::class,'fresh'])->name('fresh');
+    Route::get('/haberler/{slug}', [ViewController::class, 'news_detail'])->name('news.detail');
     Route::get('/iletisim', [ViewController::class, 'contact'])->name('contact');
     Route::get('/kampus', [ViewController::class, 'campus'])->name('campus');
     Route::get('/neden-biz', [ViewController::class, 'firm'])->name('firm');
     Route::get('/workshoplar', [ViewController::class, 'workshop'])->name('workshop');
+    Route::post('/email', [ViewController::class, 'email'])->name('email');
 });
 
 Route::middleware('guest')->group(function () {
@@ -61,13 +64,18 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/egitimler/delete/{id}', [TrainingController::class, 'destroy'])->whereNumber('id')->name('egitimler.delete');
     Route::put('/egitimler/status', [TrainingController::class, 'status'])->name('egitimler.status');
     Route::resource('egitimler', TrainingController::class);
-    Route::get('/kategoriler/delete/{id}', [CategorieController::class, 'destroy'])->whereNumber('id')->name('kategoriler.delete');
-    Route::put('/kategoriler/status', [CategorieController::class, 'status'])->name('kategoriler.status');
-    Route::resource('kategoriler', CategorieController::class);
-    Route::resource('article', ArticleController::class);
-    Route::get('/atolye/delete/{id}', [ArticleController::class, 'destroy'])->whereNumber('id')->name('atolye.delete');
-    Route::put('/atolye/status', [ArticleController::class, 'status'])->name('atolye.status');
+    Route::get('/atolye/delete/{id}',[StudioController::class,'destroy'])->whereNumber('id')->name('atolye.delete');
+    Route::put('/atolye/status', [StudioController::class, 'status'])->name('atolye.status');
     Route::resource('atolye', StudioController::class);
+    Route::get('/kapus/delete/{id}',[CampusController::class,'destroy'])->whereNumber('id')->name('kampus.delete');
+    Route::post('/kampus/olustur',[CampusController::class,'store'])->name('kampus.store');
+    Route::resource('kampus',CampusController::class);
+    Route::get('/blog/delete/{id}',[BlogController::class,'destroy'])->whereNumber('id')->name('blog.delete');
+    Route::put('/blog/status', [BlogController::class, 'status'])->name('blog.status');
+    Route::get('/blog/kategori', [BlogController::class, 'category'])->name('blog.category');
+    Route::post('/blog/kategori/', [BlogController::class, 'category_post'])->name('blog.category.post');
+    Route::get('/blog/kategori/delete/{id}', [BlogController::class, 'category_delete'])->name('blog.category.delete');
+    Route::resource('blog', BlogController::class);
     Route::get('/ayarlar',[SettingController::class,'index'])->name('ayarlar.index');
     Route::put('/ayarlar',[SettingController::class,'update'])->name('ayarlar.update');
 

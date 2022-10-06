@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Article extends Model
+class Campus extends Model
 {
     use HasFactory;
-
+    protected $table = 'campus';
+    protected $guarded = ['_token','_method'];
 }

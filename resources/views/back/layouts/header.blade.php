@@ -176,6 +176,11 @@
                 <li class="nav-item"> <a class="nav-link" href="{{route('admin.slaytlar.index')}}">Anasayfa</a></li>
               </ul>
             </div>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{{route('admin.kampus.index')}}">Kampüs</a></li>
+              </ul>
+            </div>
           </li>
           <li class="nav-item {{Route::is('admin.ekibimiz.index') || Route::is('admin.ekibimiz.create') || Route::is('admin.ekibimiz.edit') ? 'active' : ''}}">
             <a class="nav-link" href="{{route('admin.ekibimiz.index')}}">
@@ -195,17 +200,24 @@
               <span class="menu-title">Eğitimler</span>
             </a>
           </li>
-          <li class="nav-item {{Request::segment(2) == 'kategoriler' ? 'active' : ''}}">
-            <a class="nav-link" href="{{route('admin.kategoriler.index')}}">
-              <i class="mdi mdi-image-filter-none menu-icon"></i>
-              <span class="menu-title">Kategoriler</span>
-            </a>
-          </li>
           <li class="nav-item {{Request::segment(2) == 'atolye' ? 'active' : ''}}">
             <a class="nav-link" href="{{route('admin.atolye.index')}}">
               <i class="mdi mdi-book-open-variant menu-icon"></i>
               <span class="menu-title">Atölye</span>
             </a>
+          </li>
+          <li class="nav-item {{Request::segment(2) == 'blog' ? 'active' : ''}}">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-blog" aria-expanded="false" aria-controls="ui-basic">
+              <i class="mdi mdi-blogger menu-icon"></i>
+              <span class="menu-title ml-3">Blog</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-blog">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{{route('admin.blog.category')}}">Kategoriler</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{route('admin.blog.index')}}">Makaleler</a></li>
+              </ul>
+            </div>
           </li>
           <li class="nav-item {{Route::is('admin.ayarlar.index') ? 'active' : ''}}">
             <a class="nav-link" href="{{route('admin.ayarlar.index')}}">

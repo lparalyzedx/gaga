@@ -86,7 +86,7 @@ class TrainingController extends Controller
      */
     public function edit($id)
     {
-        $training = Training::find($id)->first() ?? abort(404);
+        $training = Training::whereId($id)->first() ?? abort(404);
         return  view('back.pages.training.edit', compact('training'));
     }
 

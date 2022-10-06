@@ -34,5 +34,7 @@ class SettingController extends Controller
 
         $setting->update($request->post());
 
+        return redirect()->route('admin.ayarlar.index');
+
     }
 }

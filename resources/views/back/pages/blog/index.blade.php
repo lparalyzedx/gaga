@@ -1,12 +1,12 @@
 @extends('back.layouts.master')
-@section('title', 'Eğitimler')
+@section('title', 'Makaleler')
 @section('content')
     <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card-fade">
+        <div class="card">
             <div class="card-body">
                 <div class="w-100 d-flex justify-content-between">
                     <h4 class="card-title">@yield('title')</h4>
-                    <a href="{{ route('admin.egitimler.create') }}" class="btn btn-primary text-light">Eğitim ekle</a>
+                    <a href="{{ route('admin.blog.create') }}" class="btn btn-primary text-light">Makale ekle</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -17,6 +17,9 @@
                                 </th>
                                 <th>
                                     Başlık
+                                </th>
+                                <th>
+                                    Kategori
                                 </th>
                                 <th>
                                     Açıklama
@@ -30,29 +33,32 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($trainings as $training)
+                            @foreach ($articles as $article)
                                 <tr>
                                     <td class="">
-                                        <img src="{{ asset('storage/trainings/' . $training->image) }}" alt="image">
+                                        <img src="{{ asset('storage/articles/' . $article->image) }}" alt="image">
                                     </td>
                                     <td>
-                                        {{ $training->title }}
+                                        {{ $article->title }}
                                     </td>
                                     <td>
-                                        {!! Str::limit($training->description,30) !!}
+                                        {{ $article->category->name ?? 'Kategori seçilmedi' }}
+                                    </td>
+                                    <td>
+                                        {!! Str::limit($article->description,30) !!}
                                     </td>
 
                                     <td><button
-                                            class="status btn btn-{{ $training->status == 1 ? 'success' : 'danger' }} text-light"
-                                            data-id="{{ $training->id }}">{{ $training->status == 1 ? 'Aktif' : 'Pasif' }}</button>
+                                            class="status btn btn-{{ $article->status == 1 ? 'success' : 'danger' }} text-light"
+                                            data-id="{{ $article->id }}">{{ $article->status == 1 ? 'Aktif' : 'Pasif' }}</button>
                                     </td>
 
                                     <td class="m-auto">
                                         <div class="d-flex py-2 align-items-center m-auto">
-                                            <a href="{{ route('admin.egitimler.edit', $training->id) }}"
+                                            <a href="{{ route('admin.blog.edit', $article->id) }}"
                                                 class="btn btn-warning btn-sm text-light me-2" title="Düzenle"><i
                                                     class="mdi mdi-grease-pencil"></i></a>
-                                            <a href="{{ route('admin.egitimler.delete', $training->id) }}"
+                                            <a href="{{ route('admin.blog.delete', $article->id) }}"
                                                 class="btn btn-sm btn-danger text-light" title="Sil"><i
                                                     class="mdi mdi-delete"></i></a>
                                         </div>
@@ -78,7 +84,7 @@
             });
             $.ajax({
                 type: "PUT",
-                url: `{{ route('admin.egitimler.status') }}`,
+                url: `{{ route('admin.blog.status') }}`,
                 data: {
                     id: self.data('id')
                 },

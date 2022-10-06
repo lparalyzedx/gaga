@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategorieRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class CategorieRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:categories,name',
-            'visibility' => 'required'
+            'name' => 'required|unique:blogcategories,name',
         ];
     }
 
@@ -33,8 +32,7 @@ class CategorieRequest extends FormRequest
     {
         return [
             'name.required' => 'Kategori adı boş bırakılamaz.',
-            'name.unique' => 'Kategori adı zaten mevcut.',
-            'visibility.required' => 'Lütfen bir görünürlük Seçiniz'
+            'name.unique' => 'Kategori adı zaten mevcut'
         ];
     }
 }

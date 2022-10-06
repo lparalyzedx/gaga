@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArticleCreateRequest extends FormRequest
+class BlogArticleUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,11 @@ class ArticleCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:studioarticles,title',
+            'title' => 'required|unique:blogarticles,title,'.$this->id.',id',
             'description' => 'required',
-            'image' => 'required|image|mimes:png,jpg,jpeg',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg',
             'images' => 'nullable',
-            'category_id' => 'required',
+            'category_id' => 'nullable',
             'images.*' => 'image|mimes:jpeg,png,jpg'
         ];
     }
@@ -44,8 +44,8 @@ class ArticleCreateRequest extends FormRequest
             'image.mimes' => 'Resim dosya uzantısı desteklenmiyor.',
             'images.*.image' => 'Resim alanı resim dosyası olmalıdır.',
             'images.*.required' => 'Resim alanı zorunludur.',
-            'category_id.required' => 'Kategori boş bırakılamaz.', 
-            'images.*.mimes' => 'Resim uzantısı .png, .jpg, .jpeg olmalıdır.'
+            'images.*.mimes' => 'Resim uzantısı .png, .jpg, .jpeg olmalıdır.',
+            'category_id.required' => 'Kategori zorunludur.'
         ];
     }
 }

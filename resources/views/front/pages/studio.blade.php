@@ -28,11 +28,11 @@
 
       <div class="flex justify-center pl-16 md:pl-20 py-16 md:py-24 text-white w-full basis-1/4 bg-gradient-to-r from-[#791119] to-[#BE1724]">
         <ul>
-          <li class="text-xl font-semibold mt-4">Ağustos</li>
-          <li class="text-xl font-semibold mt-4">Eylül</li>
-          <li class="text-xl font-semibold mt-4">Ekim</li>
-          <li class="text-xl font-semibold mt-4">Kasım</li>
-          <li class="text-xl font-semibold mt-4">Aralık</li>
+         @foreach ($categories as $categorie)
+         @if ($categorie->articles_count > 0)
+         <li class="text-xl font-semibold mt-4 category" data-id="{{$categorie->id}}">{{$categorie->name}}</li>
+         @endif
+         @endforeach
         </ul>
       </div>
 
@@ -46,3 +46,5 @@
     <img src="{{asset('front/images/atolye-example.jpg')}}" class="rounded-2xl" alt="">
   </div>
   @endsection
+
+  

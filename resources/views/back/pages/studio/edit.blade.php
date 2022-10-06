@@ -5,14 +5,14 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">@yield('title')</h4>
-        <form class="forms-sample" method="POST" action="{{route('admin.article.update',$article->id)}}" enctype="multipart/form-data">
+        <form class="forms-sample" method="POST" action="{{route('admin.atolye.update',$article->id)}}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
         
          <div class="form-group">
             <label for="exampleInputName1">Başlık</label>
             <input type="text" name="title" class="form-control {{$errors->has('title') ? 'border-danger' : ''}}" id="exampleInputName1" placeholder="Başlık" value="{{$article->title}}">
-            <input type="hidden" name="from" value="studio">
+            <input type="hidden" name="id" value="{{$article->id}}">
             @error('title')
             <span class="text-danger mt-3">{{$message}}
           </span>
@@ -76,7 +76,7 @@
             @enderror
           </div>
           <button type="submit" class="btn btn-primary me-2 text-light">Güncelle</button>
-          <a href="{{route('admin.egitimler.index')}}" class="btn btn-light">Vazgec</a>
+          <a href="{{route('admin.blog.index')}}" class="btn btn-light">Vazgec</a>
         </form>
       </div>
     </div>

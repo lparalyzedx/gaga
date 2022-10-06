@@ -106,7 +106,7 @@
           </div>
 
 
-        <button type="submit" class="btn  btn-block btn-primary">Güncelle</button>
+        <button type="submit" class="btn  btn-block btn-primary text-white">Güncelle</button>
 
       </div>
       </form>

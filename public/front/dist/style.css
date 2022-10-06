@@ -983,6 +983,7 @@ video {
   background-position: center;
 }
 
+
 .p-4 {
   padding: 1rem;
 }
@@ -1625,3 +1626,8 @@ body {
 }
 
 
+.header{
+  position: sticky;
+  top: 0px;
+  z-index: 99999;
+}

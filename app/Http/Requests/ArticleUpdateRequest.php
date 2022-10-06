@@ -24,7 +24,7 @@ class ArticleUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:articles,title,'.$this->id.',id',
+            'title' => 'required|unique:studioarticles,title,'.$this->id.',id',
             'description' => 'required',
             'image' => 'nullable|image|mimes:png,jpg,jpeg',
             'images' => 'nullable',

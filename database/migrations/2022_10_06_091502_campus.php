@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->string('name');
-            $table->string('slug');
-            $table->integer('status')->default(1);
-            $table->enum('visibility',['blog','studio']);
+        Schema::create('campus', function (Blueprint $table) {
+            $table->string('title');
+            $table->longText('description');
             $table->id();
             $table->timestamps();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('campus');
     }
 };

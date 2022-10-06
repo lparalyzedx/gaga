@@ -13,14 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('peoples', function (Blueprint $table) {
-            $table->string('image');
-            $table->string('name');
-            $table->string('slug');
-            $table->string('rank');
-            $table->longText('about');
-            $table->integer('status')->default(1);
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
+            $table->string('image');
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('peoples');
+        Schema::dropIfExists('images');
     }
 };

@@ -5,13 +5,12 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">@yield('title')</h4>
-        <form class="forms-sample" method="POST" action="{{route('admin.article.store')}}" enctype="multipart/form-data">
+        <form class="forms-sample" method="POST" action="{{route('admin.atolye.store')}}" enctype="multipart/form-data">
             @csrf
         
          <div class="form-group">
             <label for="exampleInputName1">Başlık</label>
             <input type="text" name="title" class="form-control {{$errors->has('title') ? 'border-danger' : ''}}" id="exampleInputName1" placeholder="Başlık" value="{{old('title')}}">
-            <input type="hidden" name="from" value="studio">
             @error('title')
             <span class="text-danger mt-3">{{$message}}
           </span>
@@ -29,7 +28,7 @@
           </div>
 
           <div class="form-group">
-            <label for="exampleFormControlSelect3">Kategori</label>
+            <label for="exampleFormControlSelect3">Dönem seç</label>
             <select class="form-control   {{$errors->has('category_id') ? 'border-danger' : ''}}" name="category_id" id="exampleFormControlSelect3">
               @foreach ($categories as $categorie)
               <option value="{{$categorie->id}}">{{$categorie->name}}</option>
@@ -71,7 +70,7 @@
             @enderror
           </div>
           <button type="submit" class="btn btn-primary me-2 text-light">Oluştur</button>
-          <a href="{{route('admin.egitimler.index')}}" class="btn btn-light">Vazgeç</a>
+          <a href="{{route('admin.blog.index')}}" class="btn btn-light">Vazgeç</a>
         </form>
       </div>
     </div>
