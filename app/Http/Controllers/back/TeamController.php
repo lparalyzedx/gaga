@@ -54,7 +54,7 @@ class TeamController extends Controller
 
         $people->create($request->post());
 
-        return redirect()->route('admin.ekibimiz.index');
+        return redirect()->route('admin.ekibimiz.index')->with('success', 'Üye başarıyla eklendi.');
     }
 
     /**
@@ -117,7 +117,7 @@ class TeamController extends Controller
 
         $people->update($request->post());
 
-        return redirect()->route('admin.ekibimiz.index');
+        return redirect()->route('admin.ekibimiz.index')->with('success', 'Üye başarıyla güncellendi');
     }
 
     /**
@@ -135,6 +135,6 @@ class TeamController extends Controller
         }
         $people->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Üye başarıyla silindi.');
     }
 }

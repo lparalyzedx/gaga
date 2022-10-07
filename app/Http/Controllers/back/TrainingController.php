@@ -51,7 +51,7 @@ class TrainingController extends Controller
 
         Training::create($request->post());
 
-        return redirect()->route('admin.egitimler.index');
+        return redirect()->route('admin.egitimler.index')->with('success', 'Eğitim başarıyla eklendi.');
     }
 
     /**
@@ -100,7 +100,7 @@ class TrainingController extends Controller
     public function update(TrainingUpdateRequest $request, $id)
     {
 
-       
+
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $file_name = Str::Slug($request->name) . '-' . now()->format('Y-m-d_H-i-s') . '.' . $file->getClientOriginalExtension();
@@ -110,7 +110,7 @@ class TrainingController extends Controller
 
         Training::find($id)->update($request->post()) ?? abort(404);
 
-        return redirect()->route('admin.egitimler.index');
+        return redirect()->route('admin.egitimler.index')->with('success', 'Eğitim başarıyla güncellendi.');
     }
 
     /**
@@ -128,6 +128,6 @@ class TrainingController extends Controller
         }
         $training->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Eğitim başarıyla silindi.');
     }
 }

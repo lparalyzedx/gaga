@@ -30,6 +30,7 @@
           <div class="form-group">
             <label for="exampleFormControlSelect3">Kategori</label>
             <select class="form-control   {{$errors->has('category_id') ? 'border-danger' : ''}}" name="category_id" id="exampleFormControlSelect3">
+              <option selected value="">Kategori seç</option>
               @foreach ($categories as $categorie)
               <option value="{{$categorie->id}}">{{$categorie->name}}</option>
               @endforeach

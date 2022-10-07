@@ -50,7 +50,7 @@
           <li><a href="{{route('training')}}" class="text-sm tracking-wider py-8 px-8">EĞİTİMLER</a></li>
           <li><a href="{{route('campus')}}" class="text-sm tracking-wider py-8 px-8">KAMPÜS</a></li>
           <li><a href="{{route('news')}}" class="text-sm tracking-wider py-8 px-8">HABERLER</a></li>
-          <li><a href="{{route('workshop')}}" class="text-sm tracking-wider py-8 px-8">BLOG</a></li>
+          <li><a href="{{route('blog')}}" class="text-sm tracking-wider py-8 px-8">BLOG</a></li>
           <li><a href="{{route('contact')}}" class="text-sm tracking-wider py-8 px-8">BİZE ULAŞIN</a></li>
         </ul>
       </div>

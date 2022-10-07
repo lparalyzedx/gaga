@@ -5,6 +5,7 @@ namespace App\Http\Controllers\back;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleCreateRequest;
 use App\Http\Requests\ArticleUpdateRequest;
+use App\Models\Article;
 use App\Models\Articleimage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -32,8 +33,8 @@ class StudioController extends Controller
      */
     public function create()
     {
-        $categories = Studiocategorie::orderBy('id','DESC')->get();
-        return view('back.pages.studio.add',compact('categories'));
+        $categories = Studiocategorie::orderBy('id', 'DESC')->get();
+        return view('back.pages.studio.add', compact('categories'));
     }
 
     /**
@@ -57,27 +58,29 @@ class StudioController extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
+            'category_id' => $request->category_id ?? null,
             'image' => $file_name,
         ]);
 
         if ($request->file('images')) {
+            $sayac = count($request->file('images'));
             foreach ($request->file('images') as $image) {
                 $extension = $image->getClientOriginalExtension();
-                $originalName = $image->getClientOriginalName();
                 $path = 'public/articles';
-                $name = explode('.', $originalName);
-                $fileName = Str::slug($name[0], '-') . '-studio' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                $fileName = Str::slug($request->title, '-') . '-studio' . $sayac . now()->format('Y-m-d_H-i-s') . '.' . $extension;
                 Storage::putFileAs($path, $image, $fileName);
 
                 Articleimage::create(
                     [
                         'article_id' => $article->id,
-                        'image' => $fileName
+                        'image' => $fileName,
+                        'type' => 0
                     ]
                 );
+                $sayac--;
             }
         }
-        return redirect()->route('admin.atolye.index');
+        return redirect()->route('admin.atolye.index')->with('success', 'Makale başarıyla eklendi.');
     }
 
     /**
@@ -88,7 +91,7 @@ class StudioController extends Controller
      */
     public function status(Request $request)
     {
-        $article = StudioArticle::find($request->id) ?? abort(403, 'Haber bulunamadı.');
+        $article = StudioArticle::find($request->id) ?? abort(404);
 
         if ($article->status == '1') {
             $status = '0';
@@ -113,8 +116,8 @@ class StudioController extends Controller
     public function edit($id)
     {
         $article = StudioArticle::find($id) ?? abort(404);
-        $categories = Studiocategorie::orderBy('id','DESC')->get();
-        return view('back.pages.studio.edit', compact('article','categories'));
+        $categories = Studiocategorie::orderBy('id', 'DESC')->get();
+        return view('back.pages.studio.edit', compact('article', 'categories'));
     }
 
     /**
@@ -135,15 +138,14 @@ class StudioController extends Controller
             Storage::putFileAs('public/articles', $file, $file_name);
             $article->update(['image' => $file_name]);
         }
-        $article->update($request->only('title','description','status'));
+        $article->update($request->only('title', 'description', 'status', 'category_id'));
 
         if ($request->file('images')) {
+            $sayac = count($request->file('images'));
             foreach ($request->file('images') as $image) {
                 $extension = $image->getClientOriginalExtension();
-                $originalName = $image->getClientOriginalName();
                 $path = 'public/articles';
-                $name = explode('.', $originalName);
-                $fileName = Str::slug($name[0], '-') . '-studio' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                $fileName = Str::slug($request->title, '-') . '-studio' . $sayac . now()->format('Y-m-d_H-i-s') . '.' . $extension;
                 Storage::putFileAs($path, $image, $fileName);
 
                 Articleimage::find($id)->update(
@@ -151,9 +153,10 @@ class StudioController extends Controller
                         'image' => $fileName
                     ]
                 );
+                $sayac--;
             }
         }
-        return redirect()->route('admin.atolye.index');
+        return redirect()->route('admin.atolye.index')->with('success', 'Makale başarıyla güncellendi.');
     }
 
     /**
@@ -165,13 +168,15 @@ class StudioController extends Controller
     public function destroy($id)
     {
         $article = StudioArticle::find($id);
+        $images = Articleimage::where('type',0)->where('article_id',$article->id);
 
         if (Storage::exists('public/articles', $article->image)) {
             Storage::delete('public/articles/' . $article->image);
         }
 
         $article->delete();
+        $images->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Makale başarıyla silindi.');
     }
 }

@@ -33,13 +33,20 @@ Route::middleware('web')->group(function () {
     Route::get('/atolye', [ViewController::class, 'studio'])->name('studio');
     Route::get('/egitimler', [ViewController::class, 'training'])->name('training');
     Route::get('/haberler', [ViewController::class, 'news'])->name('news');
-    Route::post('haber',[ViewController::class,'fresh'])->name('fresh');
+    Route::post('haber', [ViewController::class, 'fresh'])->name('fresh');
     Route::get('/haberler/{slug}', [ViewController::class, 'news_detail'])->name('news.detail');
     Route::get('/iletisim', [ViewController::class, 'contact'])->name('contact');
     Route::get('/kampus', [ViewController::class, 'campus'])->name('campus');
     Route::get('/neden-biz', [ViewController::class, 'firm'])->name('firm');
-    Route::get('/workshoplar', [ViewController::class, 'workshop'])->name('workshop');
+    Route::get('/blog', [ViewController::class, 'blog'])->name('blog');
+    Route::get('/blog/{slug}',[ViewController::class,'blog_detail'])->name('blog.detail');
+    Route::get('/blog/{categorie}/{slug}',[ViewController::class,'blog_article'])->name('article');
+    Route::get('/atolye/workshop',[ViewController::class,'workshops'])->name('workshops');
+    Route::get('/atolye/workshop/{slug}',[ViewController::class,'workshop_detail'])->name('workshop.detail');
+    Route::get('/atolye/{slug}',[ViewController::class,'studio_detail'])->name('studio.detail');
+    Route::get('/atolye/{categorie}/{slug}',[ViewController::class,'studio_article'])->name('studio.article');
     Route::post('/email', [ViewController::class, 'email'])->name('email');
+    Route::post('/return', [ViewController::class, 'return'])->name('return');
 });
 
 Route::middleware('guest')->group(function () {
@@ -64,19 +71,18 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/egitimler/delete/{id}', [TrainingController::class, 'destroy'])->whereNumber('id')->name('egitimler.delete');
     Route::put('/egitimler/status', [TrainingController::class, 'status'])->name('egitimler.status');
     Route::resource('egitimler', TrainingController::class);
-    Route::get('/atolye/delete/{id}',[StudioController::class,'destroy'])->whereNumber('id')->name('atolye.delete');
+    Route::get('/atolye/delete/{id}', [StudioController::class, 'destroy'])->whereNumber('id')->name('atolye.delete');
     Route::put('/atolye/status', [StudioController::class, 'status'])->name('atolye.status');
     Route::resource('atolye', StudioController::class);
-    Route::get('/kapus/delete/{id}',[CampusController::class,'destroy'])->whereNumber('id')->name('kampus.delete');
-    Route::post('/kampus/olustur',[CampusController::class,'store'])->name('kampus.store');
-    Route::resource('kampus',CampusController::class);
-    Route::get('/blog/delete/{id}',[BlogController::class,'destroy'])->whereNumber('id')->name('blog.delete');
+    Route::get('/kapus/delete/{id}', [CampusController::class, 'destroy'])->whereNumber('id')->name('kampus.delete');
+    Route::post('/kampus/olustur', [CampusController::class, 'store'])->name('kampus.store');
+    Route::resource('kampus', CampusController::class);
+    Route::get('/blog/delete/{id}', [BlogController::class, 'destroy'])->whereNumber('id')->name('blog.delete');
     Route::put('/blog/status', [BlogController::class, 'status'])->name('blog.status');
     Route::get('/blog/kategori', [BlogController::class, 'category'])->name('blog.category');
     Route::post('/blog/kategori/', [BlogController::class, 'category_post'])->name('blog.category.post');
     Route::get('/blog/kategori/delete/{id}', [BlogController::class, 'category_delete'])->name('blog.category.delete');
     Route::resource('blog', BlogController::class);
-    Route::get('/ayarlar',[SettingController::class,'index'])->name('ayarlar.index');
-    Route::put('/ayarlar',[SettingController::class,'update'])->name('ayarlar.update');
-
+    Route::get('/ayarlar', [SettingController::class, 'index'])->name('ayarlar.index');
+    Route::put('/ayarlar', [SettingController::class, 'update'])->name('ayarlar.update');
 });

@@ -28,8 +28,8 @@ class BlogController extends Controller
 
     public function category()
     {
-        $categories = Blogcategorie::orderBy('id','DESC')->get();
-        return view('back.pages.blog.categories.index',compact('categories'));
+        $categories = Blogcategorie::orderBy('id', 'DESC')->get();
+        return view('back.pages.blog.categories.index', compact('categories'));
     }
 
     public function category_post(CategoryRequest $request)
@@ -38,14 +38,20 @@ class BlogController extends Controller
         $categorie->name = $request->name;
         $categorie->slug = Str::slug($request->name);
         $categorie->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Kategori başarıyla eklendi');
     }
 
     public function category_delete($id)
     {
         $cataegory = Blogcategorie::whereId($id);
         $cataegory->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Kategori başarıyla silindi');
+    }
+
+    public function category_fresh($id)
+    {
+        $article =  BlogArticle::where('category_id', $id)->with('image')->first();
+        return response()->json($article, 200);
     }
 
     /**
@@ -55,8 +61,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $categories = Blogcategorie::orderBy('id','DESC')->get();
-        return view('back.pages.blog.add',compact('categories'));
+        $categories = Blogcategorie::orderBy('id', 'DESC')->get();
+        return view('back.pages.blog.add', compact('categories'));
     }
 
     /**
@@ -80,16 +86,16 @@ class BlogController extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
+            'category_id' => $request->category_id ?? null,
             'image' => $file_name,
         ]);
 
         if ($request->file('images')) {
+            $sayac = count($request->file('images'));
             foreach ($request->file('images') as $image) {
                 $extension = $image->getClientOriginalExtension();
-                $originalName = $image->getClientOriginalName();
                 $path = 'public/articles';
-                $name = explode('.', $originalName);
-                $fileName = Str::slug($name[0], '-') . '-studio' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                $fileName = Str::slug($request->title, '-') . '-studio' . $sayac . now()->format('Y-m-d_H-i-s') . '.' . $extension;
                 Storage::putFileAs($path, $image, $fileName);
 
                 Articleimage::create(
@@ -98,9 +104,10 @@ class BlogController extends Controller
                         'image' => $fileName
                     ]
                 );
+                $sayac--;
             }
         }
-        return redirect()->route('admin.blog.index');
+        return redirect()->route('admin.blog.index')->with('success', 'Makale başarıyla eklendi.');
     }
 
     /**
@@ -111,7 +118,7 @@ class BlogController extends Controller
      */
     public function status(Request $request)
     {
-        $article = BlogArticle::find($request->id) ?? abort(403, 'Haber bulunamadı.');
+        $article = BlogArticle::find($request->id) ?? abort(403, 'Makale bulunamadı.');
 
         if ($article->status == '1') {
             $status = '0';
@@ -136,8 +143,8 @@ class BlogController extends Controller
     public function edit($id)
     {
         $article = BlogArticle::find($id)->with('category')->first() ?? abort(404);
-        $categories = Blogcategorie::orderBy('id','DESC')->get();
-        return view('back.pages.blog.edit', compact('article','categories'));
+        $categories = Blogcategorie::orderBy('id', 'DESC')->get();
+        return view('back.pages.blog.edit', compact('article', 'categories'));
     }
 
     /**
@@ -158,15 +165,14 @@ class BlogController extends Controller
             Storage::putFileAs('public/articles', $file, $file_name);
             $article->update(['image' => $file_name]);
         }
-        $article->update($request->except(['_token','_method']));
+        $article->update($request->only('name', 'description', 'category_id', 'status'));
 
         if ($request->file('images')) {
+            $sayac = count($request->file('images'));
             foreach ($request->file('images') as $image) {
                 $extension = $image->getClientOriginalExtension();
-                $originalName = $image->getClientOriginalName();
                 $path = 'public/articles';
-                $name = explode('.', $originalName);
-                $fileName = Str::slug($name[0], '-') . '-studio' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                $fileName = Str::slug($request->title, '-') . '-studio' . $sayac . now()->format('Y-m-d_H-i-s') . '.' . $extension;
                 Storage::putFileAs($path, $image, $fileName);
 
                 Articleimage::find($id)->update(
@@ -174,9 +180,10 @@ class BlogController extends Controller
                         'image' => $fileName
                     ]
                 );
+                $sayac--;
             }
         }
-        return redirect()->route('admin.blog.index');
+        return redirect()->route('admin.blog.index')->with('success', 'Makale başarıyla güncellendi');
     }
 
     /**
@@ -188,13 +195,15 @@ class BlogController extends Controller
     public function destroy($id)
     {
         $article = BlogArticle::find($id);
+        $images = Articleimage::where('type',0)->where('article_id',$article->id);
 
         if (Storage::exists('public/articles', $article->image)) {
             Storage::delete('public/articles/' . $article->image);
         }
 
         $article->delete();
+        $images->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Makale başarıyla silindi.');
     }
 }

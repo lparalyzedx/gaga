@@ -12,13 +12,13 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $setting= Setting::find(1)->first();
-        return view('back.pages.settings.index',compact('setting'));
+        $setting = Setting::find(1)->first();
+        return view('back.pages.settings.index', compact('setting'));
     }
 
     public function update(Request $request)
     {
-        $setting = Setting::find(1) ?? null; 
+        $setting = Setting::find(1) ?? null;
 
         if ($request->hasFile('logo')) {
             $imageName = Str::slug('redteks') . '-logo.' . $request->logo->getClientOriginalExtension();
@@ -34,7 +34,6 @@ class SettingController extends Controller
 
         $setting->update($request->post());
 
-        return redirect()->route('admin.ayarlar.index');
-
+        return redirect()->route('admin.ayarlar.index')->with('success', 'Ayarlar başarıyla güncellendi.');
     }
 }

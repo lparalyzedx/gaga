@@ -16,4 +16,14 @@ class StudioArticle extends Model
     {
         return $this->hasOne('App\Models\Studiocategorie','id','category_id');
     }
+
+    public function image()
+    {
+        return $this->hasMany('App\Models\Articleimage','article_id','id');
+    }
+
+    public function images()
+    {
+        return $this->image()->where('type',0);
+    }
 }

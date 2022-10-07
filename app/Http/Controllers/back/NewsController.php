@@ -75,7 +75,7 @@ class NewsController extends Controller
                 );
             }
         }
-        return redirect()->route('admin.haberler.index');
+        return redirect()->route('admin.haberler.index')->with('success', 'Haber başarıyla eklendi.');
     }
 
     /**
@@ -134,9 +134,9 @@ class NewsController extends Controller
         }
 
         $news->update([
-           'title' => $request->title,
-           'slug' => Str::slug($request->title),
-           'description' => $request->description
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description
         ]);
 
         if ($request->file('images')) {
@@ -155,7 +155,7 @@ class NewsController extends Controller
                 );
             }
         }
-        return redirect()->route('admin.haberler.index');
+        return redirect()->route('admin.haberler.index')->with('success', 'Haber başarıyla güncellendi.');
     }
 
     /**
@@ -167,13 +167,14 @@ class NewsController extends Controller
     public function destroy($id)
     {
         $new = News::find($id);
+        $images = NewsImage::where('news_id',$id);
 
         if (Storage::exists('public/news', $new->image)) {
             Storage::delete('public/news/' . $new->image);
         }
-
+        $images->delete();
         $new->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Haber başarıyla silindi.');
     }
 }

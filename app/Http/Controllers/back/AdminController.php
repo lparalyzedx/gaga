@@ -20,7 +20,7 @@ class AdminController extends Controller
     public function login_post(AdminLoginRequest $request)
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->route('admin.index');
+            return redirect()->route('admin.index')->with('success', 'Giriş Başarılı');
         } else {
             return redirect()->back()->withErrors('E-posta veya şifre hatalı lütfen tekrar deneyin..');
         }
@@ -39,7 +39,7 @@ class AdminController extends Controller
             return redirect()->route('admin.password')->withErrors(['Yanlış şifre']);
         } else {
             $user->update(['password' => $request->newPassword]);
-            return redirect()->route('admin.password')->with('success','Şifre başarıyla güncellendi.');
+            return redirect()->route('admin.password')->with('success', 'Şifre başarıyla güncellendi.');
         }
     }
 
@@ -53,5 +53,4 @@ class AdminController extends Controller
     {
         return view('back.index');
     }
-    
 }

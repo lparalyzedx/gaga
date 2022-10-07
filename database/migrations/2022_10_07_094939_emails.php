@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('articleimages', function (Blueprint $table) {
+        Schema::create('emails', function (Blueprint $table) {
             $table->id();
-            $table->integer('type')->default(1);
-            $table->unsignedBigInteger('article_id');
-            $table->string('image');
+            $table->string('email');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('articleimages');
+        Schema::dropIfExists('emails');
     }
 };

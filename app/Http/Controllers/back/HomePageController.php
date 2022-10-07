@@ -19,8 +19,8 @@ class HomePageController extends Controller
      */
     public function index()
     {
-        $slides= HomePage::orderBy('id','DESC')->get();
-        return view('back.pages.homepage.index',compact('slides'));
+        $slides = HomePage::orderBy('id', 'DESC')->get();
+        return view('back.pages.homepage.index', compact('slides'));
     }
 
     /**
@@ -41,19 +41,18 @@ class HomePageController extends Controller
      */
     public function store(SlideCreateRequest $request)
     {
-        $slide= new HomePage;
+        $slide = new HomePage;
 
-        if($request->hasFile('image'))
-        {
-            $file= $request->file('image');
-            $extension= $file->getClientOriginalExtension();
-            $file_name= Str::slug($request->title).'.'.$extension;
-            Storage::putFileAs('public/slides',$file,$file_name);
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $file_name = Str::slug($request->title) . '.' . $extension;
+            Storage::putFileAs('public/slides', $file, $file_name);
             $request->merge(['image' => $file_name]);
         }
 
         $slide->create($request->post());
-        return redirect()->route('admin.slaytlar.index');
+        return redirect()->route('admin.slaytlar.index')->with('success', 'Slayt başarıyla eklendi.');
     }
 
     /**
@@ -89,7 +88,7 @@ class HomePageController extends Controller
     public function edit($id)
     {
         $slide = HomePage::whereId($id)->first() ?? abort(404);;
-        return view('back.pages.homepage.edit',compact('slide'));
+        return view('back.pages.homepage.edit', compact('slide'));
     }
 
     /**
@@ -101,21 +100,18 @@ class HomePageController extends Controller
      */
     public function update(SlideUpdateRequest $request, $id)
     {
-       $slide= HomePage::find($id) ?? abort(404);;
+        $slide = HomePage::find($id) ?? abort(404);;
 
-       if($request->hasFile('image'))
-       {
-           $file= $request->file('image');
-           $extension= $file->getClientOriginalExtension();
-           $file_name= Str::slug($request->title).'.'.$extension;
-           Storage::putFileAs('public/slides',$file,$file_name);
-           $request->merge(['image' => $file_name]);
-       }
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $file_name = Str::slug($request->title) . '.' . $extension;
+            Storage::putFileAs('public/slides', $file, $file_name);
+            $request->merge(['image' => $file_name]);
+        }
 
-       $slide->update($request->post());
-       return redirect()->route('admin.slaytlar.index');
-
-
+        $slide->update($request->post());
+        return redirect()->route('admin.slaytlar.index')->with('success', 'Slayt başarıyla güncellendi.');
     }
 
     /**
@@ -126,14 +122,13 @@ class HomePageController extends Controller
      */
     public function destroy($id)
     {
-        $slide= HomePage::find($id);
-        
-        if(Storage::exists('public/slides',$slide->image))
-        {
-            Storage::delete('public/slides/'.$slide->image);
+        $slide = HomePage::find($id);
+
+        if (Storage::exists('public/slides', $slide->image)) {
+            Storage::delete('public/slides/' . $slide->image);
         }
         $slide->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Slayt başarıyla silindi');
     }
 }

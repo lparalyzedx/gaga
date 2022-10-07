@@ -53,14 +53,14 @@ class CampusController extends Controller
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
             $originalName = $image->getClientOriginalName();
-            $path = 'public/news';
+            $path = 'public/campus';
             $name = explode('.', $originalName);
             $fileName = Str::slug($name[0], '-') . '-is' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
             Storage::putFileAs($path, $image, $fileName);
             Image::create(['image' => $fileName]);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Resim başarıyla eklendi.');
     }
 
     /**
@@ -97,7 +97,7 @@ class CampusController extends Controller
         $campus = Campus::where('id', $id)->first() ?? abort(404);
 
         $campus->update($request->post());
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Makale başarıyla silindi');
     }
 
     /**
@@ -114,6 +114,6 @@ class CampusController extends Controller
             Storage::delete('public/campus/' . $image->image);
         }
         $image->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Resim başarıyla silindi.');
     }
 }

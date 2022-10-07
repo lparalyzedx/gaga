@@ -4,7 +4,6 @@
 <div class="head-menu w-full px-8 md:px-48 block bg-[#242424]">
     <ul class="flex gap-2 md:gap-4">
       <li><a href="{{route('company')}}" class="block text-sm md:text-lg leading-3 text-white py-8 px-4">Hakkımızda</a></li>
-      <li><a href="{{route('company')}}" class="block text-sm md:text-lg leading-3 text-white py-8 px-4">Neden GAGA’yı tercih etmeliyim?</a></li>
       <li><a href="{{route('team')}}" class="block text-sm md:text-lg leading-3 text-white py-8 px-4 bg-gradient-to-r from-[#791119] to-[#BE1724]">Ekibimiz</a></li>
     </ul>
   </div>

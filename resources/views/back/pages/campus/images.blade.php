@@ -1,5 +1,5 @@
 @extends('back.layouts.master')
-@section('title', 'Kategoriler')
+@section('title', 'Resim ekle')
 @section('content')
     <div class="row">
         <div class="col-md-6 grid-margin stretch-card">

@@ -32,8 +32,9 @@
           <div class="form-group">
             <label for="exampleFormControlSelect3">Kategori</label>
             <select class="form-control form-control-sm" name="category_id" id="exampleFormControlSelect3">
+              <option selected value="">Dönem seç</option>
               @foreach ($categories as $categorie)
-              <option {{$article->category->id == $categorie->id ? 'selected' : ''}} value="{{$categorie->id}}">{{$categorie->name}}</option>
+              <option {{$article->category->id ?? '' == $categorie->id ? 'selected' : ''}} value="{{$categorie->id}}">{{$categorie->name}}</option>
               @endforeach
             </select>
           </div>
@@ -76,7 +77,7 @@
             @enderror
           </div>
           <button type="submit" class="btn btn-primary me-2 text-light">Güncelle</button>
-          <a href="{{route('admin.blog.index')}}" class="btn btn-light">Vazgec</a>
+          <a href="{{route('admin.atolye.index')}}" class="btn btn-light">Vazgec</a>
         </form>
       </div>
     </div>

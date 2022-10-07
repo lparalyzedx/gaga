@@ -30,6 +30,7 @@
           <div class="form-group">
             <label for="exampleFormControlSelect3">Dönem seç</label>
             <select class="form-control   {{$errors->has('category_id') ? 'border-danger' : ''}}" name="category_id" id="exampleFormControlSelect3">
+              <option selected value="">Dönem seç</option>
               @foreach ($categories as $categorie)
               <option value="{{$categorie->id}}">{{$categorie->name}}</option>
               @endforeach
@@ -70,7 +71,7 @@
             @enderror
           </div>
           <button type="submit" class="btn btn-primary me-2 text-light">Oluştur</button>
-          <a href="{{route('admin.blog.index')}}" class="btn btn-light">Vazgeç</a>
+          <a href="{{route('admin.atolye.index')}}" class="btn btn-light">Vazgeç</a>
         </form>
       </div>
     </div>
