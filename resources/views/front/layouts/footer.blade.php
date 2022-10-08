@@ -69,9 +69,12 @@
                     <textarea class="bg-transparent border p-6 border-[#515151] rounded-xl text-[#515151] text-sm" name="message"
                         id="message" cols="30" rows="5" placeholder="Mesajınız"></textarea>
                     <button type="submit"
-                        class="flex items-center justify-center bg-[#BE1724] p-12 flex-1 rounded-tl-xl rounded-br-xl"><img
+                        class="flex items-center justify-center bg-[#BE1724] p-12  rounded-tl-xl rounded-br-xl">
+                        <img
                             src="{{ asset('front/images/icons/send.svg') }}" width="31" height="31"
-                            alt=""></button>
+                            alt="">
+                      </button>
+                      
                 </div>
             </form>
         </div>

@@ -21,7 +21,7 @@ class UserFactory extends Factory
             'name' => 'Cafer Güvenç',
             'email' => 'caferguvenc@gmail.com',
             'email_verified_at' => now(),
-            'password' =>bcrypt('0852ca'), // password
+            'password' => bcrypt('0852ca')
         ];
     }
 

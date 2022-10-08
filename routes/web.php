@@ -47,6 +47,8 @@ Route::middleware('web')->group(function () {
     Route::get('/atolye/{categorie}/{slug}',[ViewController::class,'studio_article'])->name('studio.article');
     Route::post('/email', [ViewController::class, 'email'])->name('email');
     Route::post('/return', [ViewController::class, 'return'])->name('return');
+    Route::get('/form',[ViewController::class,'form'])->name('form');
+    Route::post('/application',[ViewController::class,'application'])->name('application');
 });
 
 Route::middleware('guest')->group(function () {

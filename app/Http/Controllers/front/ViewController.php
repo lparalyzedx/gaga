@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ApplicationMail;
 use App\Mail\ContactMail;
 use App\Models\Article;
 use App\Models\Blogarticle;
@@ -204,5 +205,41 @@ class ViewController extends Controller
 
         Mail::to('lparalyzedx3@gmail.com')->send(new ContactMail($data));
         return redirect()->back();
+    }
+
+    public function form()
+    {
+        return view('front.pages.form');
+    }
+
+    public function application(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'surname' => 'required',
+            'gender' => 'required',
+            'birthday' => 'required',
+            'phone' => 'required',
+            'email' => 'required|email',
+            'training' => 'required',
+            'city' => 'required',
+            'suggestion' => 'required',
+            'terms' => 'required'
+        ]);
+
+
+        $data = array(
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'gender' => $request->gender,
+            'birthday' => $request->birthday,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'training' => $request->training,
+            'city' => $request->city,
+        );
+
+        Mail::to('caferguvenc@gmail.com')->send(new ApplicationMail($data));
+        return redirect()->back()->with('send',200);
     }
 }

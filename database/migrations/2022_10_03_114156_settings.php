@@ -28,6 +28,7 @@ return new class extends Migration
             $table->longText('company_description')->nullable();
             $table->longText('policy')->nullable();
             $table->longText('whyus')->nullable();
+            $table->longText('terms');
             $table->string('map')->nullable();
             $table->timestamps();
         });

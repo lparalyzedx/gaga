@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{asset('front/src/assets/owl.theme.default.min.css')}}">
   <link rel="icon" type="image/x-icon" href="{{asset('storage/web/'.$setting->favicon)}}">
   <link rel="stylesheet" href="https://cdn.tailwindcss.com">
+
   <meta name="csrf-token" content="{{csrf_token()}}">
   @yield('css')
   <style>
