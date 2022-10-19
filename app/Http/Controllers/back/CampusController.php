@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\back;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CampusUpdateRequest;
 use App\Models\Campus;
 use App\Models\Image;
 use Illuminate\Http\Request;
@@ -92,8 +93,9 @@ class CampusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CampusUpdateRequest $request, $id)
     {
+       
         $campus = Campus::where('id', $id)->first() ?? abort(404);
 
         $campus->update($request->post());

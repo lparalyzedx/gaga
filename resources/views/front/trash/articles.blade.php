@@ -1,11 +1,12 @@
 @extends('front.layouts.master')
-@section('title',$article->category->name)
+@section('title','Günlük Workshoplar')
 @section('content')
+
 <div class="content px-8 md:px-48  py-8 md:py-24 bg-[#1B1B1B]">
 
     <h1 class="text-white text-3xl">{{$article->title}}</h1>
     <p class="text-white mt-8 md:mt-24">
-      {!!strip_tags($article->description)!!}
+      {!!$article->description!!}
     </p>
 
   </div>

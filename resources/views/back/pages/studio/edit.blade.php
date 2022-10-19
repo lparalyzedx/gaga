@@ -5,7 +5,7 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">@yield('title')</h4>
-        <form class="forms-sample" method="POST" action="{{route('admin.atolye.update',$article->id)}}" enctype="multipart/form-data">
+        <form class="forms-sample" method="POST" action="{{route('admin.atolye.update',1)}}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
         
@@ -34,7 +34,7 @@
             <select class="form-control form-control-sm" name="category_id" id="exampleFormControlSelect3">
               <option selected value="">Dönem seç</option>
               @foreach ($categories as $categorie)
-              <option {{$article->category->id ?? '' == $categorie->id ? 'selected' : ''}} value="{{$categorie->id}}">{{$categorie->name}}</option>
+              <option {{$article->category_id  == $categorie->id ? 'selected' : ''}} value="{{$categorie->id}}">{{$categorie->name}}</option>
               @endforeach
             </select>
           </div>

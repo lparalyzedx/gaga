@@ -3,7 +3,7 @@
 @section('content')
     <div class="owl-carousel p-0 m-0">
         @foreach ($slides as $slide)
-            <div class="hero w-full h-[1080px] flex flex-col items-center justify-center"
+            <div class="hero w-full h-[1080px] flex flex-col items-center justify-center slide"
                 style="background-image: url('{{ asset('storage/slides/' . $slide->image) }}')">
                 <div class="text text-center">
                     <h1 class="text-white text-3xl md:text-5xl">{{ $slide->title }}</h1>
@@ -15,17 +15,17 @@
     </div>
     </div>
 
-    <div class="flex flex-col md:flex-row items-start px-4 md:px-48 pt-24 pb-[523px] md:pb-[720px] gap-4 md:gap-48"
+    <div id="i-layout" class="flex flex-col md:flex-row items-start px-4 md:px-48 pt-24 pb-[523px] md:pb-[720px] gap-4 md:gap-48"
         style="background-image: url('{{ asset('front/images/bg-1.png') }}')">
         <div>
             <h3 class="text-white text-5xl font-extrabold">Hakkımızda</h3>
             <p class="text-white text-base font-semibold mt-12 mb-8">
-                {!! strip_tags($setting->company_description) !!}
+                {!! strip_tags(Str::limit($setting->company_description,270)) !!}
             </p>
             <a href="{{ route('company') }}" title="DEVAMINI OKU"
                 class="border border-white rounded-sm text-white py-4 px-8 inline-block">DEVAMINI OKU</a>
         </div>
-        <div class="z-50 bg-gradient-to-r from-[#BE1724] to-[#791119] p-16 mt-0 md:-mt-48 text-right rounded-2xl">
+        <div id="bar" class="z-50 bg-gradient-to-r from-[#BE1724] to-[#791119] p-16 mt-0 md:-mt-48 text-right rounded-2xl">
             <h3 title="HAKKIMIZDA" class="text-white text-2xl font-extrabold mb-20">HAKKIMIZDA</h3>
             <a href="{{ route('company') }}" title="HAKKIMIZDA"
                 class="text-white font-semibold tracking-wider block">HAKKIMIZDA</a>
@@ -40,10 +40,12 @@
     <div class="flex flex-col md:flex-row px-4 md:px-48 pb-16 md:pb-80 gap-8 bg-[#242424]">
         <div class="mt-0 md:-mt-[560px] relative">
             <a href="{{ route('training') }}">
-                <div class="absolute bottom-20 px-0 md:px-20">
+                <div class="absolute absolutes bottom-20 px-2 md:px-20 training" >
                     <span class="text-white text-xl tracking-wider">PROFESYONEL</span>
                     <h5 class="text-white font-extrabold text-5xl mt-4">Eğitimler</h5>
-                    <p class="text-white font-semibold mt-4">Mutfakta kariyer yapmak isteyenler için</p>
+                    <p class="flex text-white font-semibold mt-4">Mutfakta kariyer yapmak isteyenler için
+                        <img src="{{asset('front/images/icons/right-arrow.svg')}}" width="14" height="14" class="arrow" style="margin-left: 2rem;" alt="">
+                    </p>
                 </div>
                 <img src="{{ asset('front/images/egitimler.png') }}" width="789" height="1023" alt="Eğitimler">
             </a>
@@ -52,18 +54,24 @@
         <div class="flex flex-col gap-8 mt-0 md:-mt-[560px]">
             <div class="relative">
                 <a href="{{ route('studio') }}">
-                    <div class="absolute bottom-20 px-0 md:px-20">
+                    <div class="absolute absolutes bottom-20 px-2 md:px-20 training">
                         <h5 class="text-white font-extrabold text-5xl mt-4">Atölye</h5>
-                        <p class="text-white font-semibold mt-4">Mutfakta kariyer yapmak isteyenler için</p>
+                        <p class="flex text-white font-semibold mt-4">Mutfakta kariyer yapmak isteyenler için
+                            <img src="{{asset('front/images/icons/right-arrow.svg')}}" width="14" height="14" class="arrow" style="margin-left: 2rem;" alt="">
+                        </p>
                     </div>
                     <img src="{{ asset('front/images/atolye.png') }}" width="789" height="495" alt="Eğitimler">
                 </a>
             </div>
             <div class="relative">
                 <a href="{{ route('campus') }}">
-                    <div class="absolute bottom-20 px-0 md:px-20">
+                    <div class="absolute absolutes bottom-20 px-2 md:px-20 training">
                         <h5 class="text-white font-extrabold text-5xl mt-4">Kampüs</h5>
-                        <p class="text-white font-semibold mt-4">Mutfakta kariyer yapmak isteyenler için</p>
+                        
+                        <p class="flex text-white font-semibold mt-4">Mutfakta kariyer yapmak isteyenler için
+                            <img src="{{asset('front/images/icons/right-arrow.svg')}}" width="14" height="14" class="arrow" style="margin-left: 2rem;" alt="">
+                        </p>
+                        
                     </div>
                     <img src="{{ asset('front/images/kampus.png') }}" width="789" height="495" alt="Eğitimler">
             </div>
@@ -71,26 +79,34 @@
 
         </div>
     </div>
+    <div class="text-justify md:hidden" style="margin-top:2rem;">
+        <span class="text-white text-xl tracking-wider">GAGA</span>
+        <h3 class="text-white font-extrabold text-5xl mt-4">Haberler</h3>
+    </div>
     <div
-        class="flex flex-col md:flex-row items-start px-4 md:px-48 pt-8 md:pt-24 pb-16 md:pb-72 gap-8 md:gap-48 bg-[#1B1B1B] content">
-        <div class="mt-0 md:-mt-64 flex-1">
-            <span class="text-white text-xl tracking-wider">GAGA</span>
+        class="flex flex-col md:flex-row items-start px-4 md:px-48 pt-8 md:pt-24 pb-16 md:pb-72 gap-8 md:gap-48 bg-[#1B1B1B] content-news">
+        <div class="mt-0 md:-mt-64 flex-1  text-justify">
+            <div class="hidden md:flex flex-col">
+                <span class="text-white text-xl tracking-wider">GAGA</span>
             <h3 class="text-white font-extrabold text-5xl mt-4">Haberler</h3>
-            <h4 class="text-white text-3xl font-extrabold mt-32 mb-4 title">{{ $news[0]->title ?? 's' }}</h4>
-            <span class="text-[#BE1724] date"></span>
+            </div>
+            <div id="news">
+                <h4 class="text-white text-3xl font-extrabold mt-32 mb-4 title">{{ $news[0]->title ?? 's' }}</h4>
+            <span class="text-[#BE1724] date text-xl"></span>
             <p class="text-white text-base font-semibold mt-12 mb-8 description">{{ strip_tags($news[0]->title ?? 'S') }}
             </p>
             <a href="{{ route('news.detail', $news[0]->slug ?? 's') }}" title="DEVAMINI OKU"
                 class="border border-white rounded-sm text-white py-4 px-8 inline-block link">DEVAMINI OKU</a>
+            </div>
         </div>
 
         <div class="mt-0 md:-mt-64 w-full md:max-w-[50%]">
             <ul>
-                <li class="relative">
+                <li class="relative" class="rounded">
                     <div class="egitim-carousel">
                         @foreach ($news as $new)
                             <img src="{{ asset('storage/news/' . $new->image) }}"
-                                style="width:789px !important; height:609px !important; object-fit:cover;"
+                            width="789" height="495" class="rounded" style="border-radius: 12px;"
                                 data-id="{{ $new->id }}">
                         @endforeach
                     </div>
@@ -112,30 +128,31 @@
     </div>
 
     <div class="flex flex-col md:flex-row items-start px-4 md:px-48 py-4 md:py-24 gap-4 md:gap-48 bg-[#242424]">
-        <div class="relative mt-0 md:-mt-40 w-full md:max-w-[50%]">
+        <div class="relative mt-0 md:-mt-40 w-full md:max-w-[50%] ">
             <div class="absolute right-0 top-8 rounded-tl-full rounded-bl-full text-white px-4 py-2 bg-[#BE1724]">
                 <a class="flex gap-4" href="{{ $setting->youtube }}" title="Youtube kanalımızı ziyaret et">
                     <img src="{{ asset('front/images/icons/play.svg') }}" width="24" height="24" alt="">
                     Youtube kanalımızı ziyaret et</a>
             </div>
-            <div class="absolute bottom-16 px-16">
+            <div class="absolute absolutes bottom-16 px-16 py-4" style="margin-left: -2rem">
                 <p class="text-white font-semibold mt-4">Gaga’yı <br>yakından tanımak için</p>
                 <h5 class="text-white font-extrabold text-3xl mt-4">TANITIM FİLMİNİ İZLEYİN</h5>
             </div>
             <img src="{{ asset('front/images/ebulten.png') }}" width="629" height="449" alt="">
         </div>
-        <div class="flex-1 relative mt-8 md:mt-0">
-            <h4 class="text-white text-3xl font-extrabold mb-4">E-BÜLTENE <span class="font-normal">KAYIT OL</span></h4>
-            <p class="text-white text-xl font-medium mb-8">E-Bültene kayıt ol, projelerden indirimlerden ilk sen haberdar
-                ol!</p>
-            <form action="{{ route('return') }}" method="POST">
+        <div class="flex-1 relative mt-8 md:mt-0 p-7 text-center">
+            <h4 class="text-white text-3xl font-extrabold mb-4">E-BÜLTENE <span class="font-normal text-3xl">KAYIT OL</span></h4>
+            <h2 class="text-white text-xl font-medium mb-8">E-Bültene kayıt ol, projelerden indirimlerden ilk sen haberdar
+                ol!</h2>
+            <form action="{{route('return')}}" method="POST" class="flex items-center justify-center">
                 @csrf
                 <input class="bg-transparent border-b border-[#868686] py-4 w-4/6" type="email"
                     placeholder="E-Posta@adresiniz.com" name="email" required>
+                    <img class="absolute right-0  icon"  src="{{ asset('front/images/icons/add.svg') }}" width="44"
+                    height="44" alt="Gönder">
+            </div>
             </form>
-            <img class="absolute right-0 top-1/2" src="{{ asset('front/images/icons/add.svg') }}" width="44"
-                height="44" alt="Gönder">
-        </div>
+    </div>
     </div>
 @endsection
 @section('js')
@@ -168,9 +185,11 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+                const news= $('#news');
                 const self = $(this);
                 const images = document.querySelectorAll('.egitim-carousel img');
                 const image = images[event.item.index];
+                news.fadeOut();
                 $.ajax({
 
                     type: "POST",
@@ -183,7 +202,7 @@
                         $('.description').html(response.description);
                         $('.link').attr('href', 'haberler/' + response.slug);
                         $('.date').text(response.date);
-                        console.log(response.date);
+                        news.fadeIn();
                     }
                 });
             }
@@ -205,26 +224,7 @@
             })
 
 
-            $(".open-menu").on('click', function(e) {
-
-                e.preventDefault();
-                $(this).hide();
-                $('.close-menu').show();
-
-                $('.header-menu').removeClass('hidden');
-
-            });
-
-            $(".close-menu").on('click', function(e) {
-
-                e.preventDefault();
-                $(this).hide();
-                $('.open-menu').show();
-
-                $('.header-menu').addClass('hidden');
-
-            });
-
+           
         });
     </script>
 @endsection

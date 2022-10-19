@@ -21,11 +21,11 @@
                 @method('PUT')
                 <div class="form-group">
                     <label for="category">Başlık</label>
-                    <input type="text" name="title" class="form-control" id="category" value="{{$campus->title}}">
+                    <input type="text" name="title" class="form-control {{$errors->has('title') ? 'border-danger' : ''}}" value="{{$campus->title}}">
                 </div>
                 <div class="form-group">
                     <label for="category">Açıklama</label>
-                    <textarea type="text" name="description" class="form-control editor" id="category">{{$campus->description}}</textarea>
+                    <textarea type="text {{$errors->has('description') ? 'border-danger' : ''}}" name="description" class="form-control editor" id="category">{{$campus->description}}</textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary text-light">kaydet</button>

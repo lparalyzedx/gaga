@@ -38,7 +38,7 @@ class AdminController extends Controller
         if (!Hash::check($request->password, $user->password)) {
             return redirect()->route('admin.password')->withErrors(['Yanlış şifre']);
         } else {
-            $user->update(['password' => $request->newPassword]);
+            $user->update(['password' => bcrypt($request->newPassword)]);
             return redirect()->route('admin.password')->with('success', 'Şifre başarıyla güncellendi.');
         }
     }

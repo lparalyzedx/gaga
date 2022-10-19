@@ -27,19 +27,7 @@
             @enderror
           </div>
 
-          <div class="form-group">
-            <label for="exampleFormControlSelect3">Kategori</label>
-            <select class="form-control   {{$errors->has('category_id') ? 'border-danger' : ''}}" name="category_id" id="exampleFormControlSelect3">
-              <option selected value="">Kategori seç</option>
-              @foreach ($categories as $categorie)
-              <option value="{{$categorie->id}}">{{$categorie->name}}</option>
-              @endforeach
-            </select>
-            @error('category_id')
-            <span class="text-danger mt-3">{{$message}}
-          </span>
-            @enderror
-          </div>
+          
           
           <div class="form-group">
             <label>Resim</label>

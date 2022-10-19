@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('logo')->default('');
-            $table->string('favicon')->default('');
-            $table->string('facebook')->default('');
-            $table->string('youtube')->default('');
-            $table->string('instagram')->default('');
-            $table->string('linkedin')->default('');
+            $table->string('logo')->nullable();
+            $table->string('favicon')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('linkedin')->nullable();
             $table->string('twitter')->nullable();
-            $table->string('email')->default('');
-            $table->string('phone')->default('');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->longText('company_description')->nullable();
             $table->longText('policy')->nullable();

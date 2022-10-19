@@ -29,15 +29,7 @@
             @enderror
           </div>
 
-          <div class="form-group">
-            <label for="exampleFormControlSelect3">Kategori</label>
-            <select class="form-control form-control-sm" name="category_id" id="exampleFormControlSelect3">
-              <option value="" selected>Kategori seç</option>
-              @foreach ($categories as $categorie)
-              <option {{$article->category->id  ?? '' == $categorie->id ? 'selected' : ''}} value="{{$categorie->id}}">{{$categorie->name}}</option>
-              @endforeach
-            </select>
-          </div>
+         
 
           <div class="form-group">
             <label for="exampleFormControlSelect3">Durum</label>

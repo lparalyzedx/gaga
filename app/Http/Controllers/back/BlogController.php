@@ -22,7 +22,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $articles = BlogArticle::with('category')->orderBy('id', 'DESC')->get();
+        $articles = BlogArticle::orderBy('id', 'DESC')->get();
         return view('back.pages.blog.index', compact('articles'));
     }
 
@@ -61,8 +61,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $categories = Blogcategorie::orderBy('id', 'DESC')->get();
-        return view('back.pages.blog.add', compact('categories'));
+        //$categories = Blogcategorie::orderBy('id', 'DESC')->get();
+        return view('back.pages.blog.add');
     }
 
     /**
@@ -86,7 +86,6 @@ class BlogController extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
-            'category_id' => $request->category_id ?? null,
             'image' => $file_name,
         ]);
 
@@ -142,9 +141,9 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        $article = BlogArticle::find($id)->with('category')->first() ?? abort(404);
-        $categories = Blogcategorie::orderBy('id', 'DESC')->get();
-        return view('back.pages.blog.edit', compact('article', 'categories'));
+        $article = BlogArticle::where('id',$id)->with('category')->first() ?? abort(404);
+       // $categories = Blogcategorie::orderBy('id', 'DESC')->get();
+        return view('back.pages.blog.edit', compact('article'));
     }
 
     /**
@@ -165,7 +164,7 @@ class BlogController extends Controller
             Storage::putFileAs('public/articles', $file, $file_name);
             $article->update(['image' => $file_name]);
         }
-        $article->update($request->only('name', 'description', 'category_id', 'status'));
+        $article->update($request->only('title', 'description', 'status'));
 
         if ($request->file('images')) {
             $sayac = count($request->file('images'));
@@ -194,7 +193,7 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        $article = BlogArticle::find($id);
+        $article = BlogArticle::whereId($id)->first();
         $images = Articleimage::where('type',0)->where('article_id',$article->id);
 
         if (Storage::exists('public/articles', $article->image)) {

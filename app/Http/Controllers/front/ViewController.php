@@ -71,22 +71,22 @@ class ViewController extends Controller
 
     public function studio()
     {
-        $categories = Studiocategorie::orderBy('id', 'DESC')->withCount('articles')->get();
-        $article = StudioArticle::where('status', 1)->with('images', 'category')->where('category_id', '!=', 'null')->orderBy('id', 'DESC')->first();
-        return view('front.pages.studio', compact('categories', 'article'));
+        $articles = StudioArticle::where('category_id','!=',null)->whereStatus(1)->orderBy('id', 'DESC')->get();
+        $articled = StudioArticle::where('status', 1)->with('images', 'category')->where('category_id', '!=', 'null')->orderBy('id', 'DESC')->first();
+        //dd($article);
+        return view('front.pages.studio', compact('articles', 'articled'));
     }
 
     public function workshops()
     {
         $articles = StudioArticle::where('category_id', null)->where('status', 1)->with('images')->get();
-        return view('front.pages.workshop-detail', compact('articles'));
+        $article = StudioArticle::whereStatus(1)->orderBy('id','DESC')->first();
+        return view('front.pages.workshop-detail', compact('articles','article'));
     }
 
     public function workshop_detail($slug)
     {
-        $article = StudioArticle::where('slug', $slug)->with('images')->whereHas('images', function ($query) {
-            $query->where('type', 0);
-        })->first() ?? abort(403, 'Makale bulunamadı.');
+        $article = StudioArticle::where('slug',$slug)->with('images')->first() ?? abort(403, 'Makale bulunamadı.');
 
         return view('front.pages.articles', compact('article'));
     }
@@ -150,23 +150,22 @@ class ViewController extends Controller
 
     public function blog()
     {
-        $categories = Blogcategorie::withCount('articles')->whereHas('articles', function ($query) {
+       /* $categories = Blogcategorie::withCount('articles')->whereHas('articles', function ($query) {
             $query->where('status', 1);
         })->get();
-        $article = Blogarticle::where('status', 1)->orderBy('id', 'DESC')->with('images')->first() ?? null;
-        return view('front.pages.blog', compact('categories', 'article'));
+        */
+        $articles = Blogarticle::where('status', 1)->orderBy('id', 'DESC')->with('images')->get() ?? null;
+        return view('front.pages.blog', compact( 'articles'));
     }
 
     public function blog_detail($slug)
     {
-        $articles = Blogcategorie::where('slug', $slug)->with('articles')->whereHas('articles', function ($query) {
+        $article = Blogarticle::where('slug',$slug)->with('images')->where('status',1)->first() ?? abort(403, 'Makale bulunamadı.');
+       /* $categories = Blogcategorie::withCount('articles')->whereHas('articles', function ($query) {
             $query->where('status', 1);
-        })->first() ?? abort(403, 'Kategori bulunamadı.');
-        $categories = Blogcategorie::withCount('articles')->whereHas('articles', function ($query) {
-            $query->where('status', 1);
-        })->orderBy('id', 'DESC')->get();
+        })->orderBy('id', 'DESC')->get();*/
 
-        return view('front.pages.blog-detail', compact('articles', 'categories'));
+        return view('front.pages.blog-detail', compact('article'));
     }
 
     public function blog_article($categorie, $slug)
@@ -203,7 +202,7 @@ class ViewController extends Controller
         );
 
 
-        Mail::to('lparalyzedx3@gmail.com')->send(new ContactMail($data));
+        Mail::to('canguvenc52@gmail.com')->send(new ContactMail($data));
         return redirect()->back();
     }
 
@@ -238,8 +237,16 @@ class ViewController extends Controller
             'training' => $request->training,
             'city' => $request->city,
         );
-
-        Mail::to('caferguvenc@gmail.com')->send(new ApplicationMail($data));
+        Mail::to('canguvenc52@gmail.com')->send(new ApplicationMail($data));
         return redirect()->back()->with('send',200);
+    }
+
+    public function fresh_article(Request $request)
+    {
+        $article = StudioArticle::where('id',$request->id)->with('images','category')->first() ?? 'Makale bulunamadı.';
+
+        return response()->json([
+            'article' => $article
+        ],200);
     }
 }

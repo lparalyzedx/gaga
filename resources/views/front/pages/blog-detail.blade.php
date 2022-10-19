@@ -1,27 +1,55 @@
 @extends('front.layouts.master')
-@section('title', $articles->name)
+@section('title','Blog')
 @section('content')
-<div class="head-menu w-full px-8 md:px-48 block bg-[#242424]">
-  <ul class="flex gap-2 md:gap-4">
-    @foreach ($categories as $category)
-        @if ($category->articles_count > 0)
-        <li><a href="{{route('blog.detail',$category->slug)}}" class="block text-sm md:text-lg leading-3 text-white py-8 px-4  {{Request::segment(2) == $category->slug ? 'bg-gradient-to-r from-[#791119] to-[#BE1724]' : ''}}">{{$category->name}}</a></li>
-        @endif
+
+<div class="content px-8 md:px-48  py-8 md:py-24 bg-[#1B1B1B]">
+
+    <h1 class="text-white text-3xl">{{$article->title}}</h1>
+    <span class="text-white date text-sm blog-date">{{$article->created_at->format('d.m.Y')}}</span>
+    <p class="text-white mt-8 md:mt-24">
+      {!!$article->description!!}
+    </p>
+
+  </div>
+
+  <div id="carousel" class="flex md:grid gap-4 md:gap-8 md:grid-cols-3 px-16 md:px-48 py-16 md:py-24 bg-[#242424] rounded-xl">
+    @foreach ($article->images as $image)
+    <img src="{{asset('storage/articles/'.$image->image)}}"  alt="" class="rounded-xl" style="width:400px !important; height: 300px !important; object-fit:cover;">
     @endforeach
-  </ul>
-</div>
-    <div class="content grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-16 px-8 md:px-48  py-8 md:py-24 bg-[#1B1B1B]">
-        @foreach ($articles->articles as $article)
-            <a href="{{ route('article',[$articles->slug,$article->slug]) }}">
-                <div class="flex flex-col gap-4 group">
-                    <img src="{{ asset('storage/articles/' . $article->image) }}"
-                        class="rounded-2xl hover:-mt-8 transition-all duration-500"
-                        style="width:400px !important; height: 300px !important; object-fit:cover;">
-                    <h3 class="text-2xl text-white group-hover:text-[#BE1724]">{{ $article->title }}</h3>
-                    <span class="text-white font-medium">{{ Str::limit(strip_tags($article->description), 70) }}
-                    </span>
-                </div>
-            </a>
-        @endforeach
-    </div>
-@endsection
+  </div>
+  @endsection
+
+
+  @section('js')
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+
+  <script>
+    $('#carousel').owlCarousel({
+    loop: true,
+    dots: true,
+    nav: true,
+    autoplay:true,
+autoplayTimeout:2000,
+autoplayHoverPause:true,
+    responsiveClass:true,
+    margin:10,
+    responsive:{
+        0:{
+            items:1,
+            nav:true
+        },
+        600:{
+            items:3,
+            nav:false
+        },
+        1000:{
+            items:3,
+            nav:true,
+            loop:false
+        }
+    }
+})
+  </script>
+
+  @endsection

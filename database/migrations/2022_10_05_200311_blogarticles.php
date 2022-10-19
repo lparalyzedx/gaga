@@ -21,9 +21,10 @@ return new class extends Migration
             $table->string('image');
             $table->integer('status')->default(1);
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->foreign('category_id')
+            /*$table->foreign('category_id')
             ->references('id')
             ->on('blogcategories');
+            */
             $table->timestamps();
         });
     }

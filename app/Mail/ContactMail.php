@@ -30,4 +30,5 @@ class ContactMail extends Mailable
     {
         return $this->from('canguvenc52@gmail.com')->subject('Bir yeni mesaj')->view('notifications.contact')->with('data', $this->data);
     }
+
 }

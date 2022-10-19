@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\back;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SettingRequest;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -16,18 +17,19 @@ class SettingController extends Controller
         return view('back.pages.settings.index', compact('setting'));
     }
 
-    public function update(Request $request)
+    public function update(SettingRequest $request)
     {
+       
         $setting = Setting::find(1) ?? null;
 
         if ($request->hasFile('logo')) {
-            $imageName = Str::slug('redteks') . '-logo.' . $request->logo->getClientOriginalExtension();
+            $imageName = Str::slug('gaga') . '-logo.' . $request->logo->getClientOriginalExtension();
             Storage::putFileAs('public/web', $request->file('logo'), $imageName);
             $request->merge(['logo' => $imageName]);
         }
 
         if ($request->hasFile('favicon')) {
-            $imageName = Str::slug('redteks') . '-favicon.' . $request->favicon->getClientOriginalExtension();
+            $imageName = Str::slug('gaga') . '-favicon.' . $request->favicon->getClientOriginalExtension();
             Storage::putFileAs('public/web/', $request->file('favicon'), $imageName);
             $request->merge(['favicon' => $imageName]);
         }

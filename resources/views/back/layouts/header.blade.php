@@ -18,8 +18,8 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="{{route('admin.index')}}"><img src="{{asset('back/images/logo.svg')}}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="{{route('admin.index')}}"><img src="{{asset('back/images/logo-mini.svg')}}" alt="logo"/></a>
+          <a class="navbar-brand brand-logo" href="{{route('admin.index')}}"></a>
+          <a class="navbar-brand brand-logo-mini" href="{{route('admin.index')}}"></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -113,7 +113,15 @@
               <span class="menu-title">Atölye</span>
             </a>
           </li>
+
           <li class="nav-item {{Request::segment(2) == 'blog' ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('admin.blog.index')}}">
+              <i class="mdi mdi-blogger menu-icon"></i>
+              <span class="menu-title">Blog</span>
+            </a>
+          </li>
+
+          {{-- <li class="nav-item {{Request::segment(2) == 'blog' ? 'active' : ''}}">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-blog" aria-expanded="false" aria-controls="ui-basic">
               <i class="mdi mdi-blogger menu-icon"></i>
               <span class="menu-title ml-3">Blog</span>
@@ -125,7 +133,7 @@
                 <li class="nav-item"> <a class="nav-link" href="{{route('admin.blog.index')}}">Makaleler</a></li>
               </ul>
             </div>
-          </li>
+          </li> --}}
           <li class="nav-item {{Route::is('admin.ayarlar.index') ? 'active' : ''}}">
             <a class="nav-link" href="{{route('admin.ayarlar.index')}}">
               <i class="mdi mdi-settings menu-icon"></i>

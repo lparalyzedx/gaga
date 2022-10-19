@@ -43,6 +43,7 @@ Route::middleware('web')->group(function () {
     Route::get('/blog/{categorie}/{slug}',[ViewController::class,'blog_article'])->name('article');
     Route::get('/atolye/workshop',[ViewController::class,'workshops'])->name('workshops');
     Route::get('/atolye/workshop/{slug}',[ViewController::class,'workshop_detail'])->name('workshop.detail');
+    Route::post('/fresh_article',[ViewController::class,'fresh_article'])->name('fresh.article');
     Route::get('/atolye/{slug}',[ViewController::class,'studio_detail'])->name('studio.detail');
     Route::get('/atolye/{categorie}/{slug}',[ViewController::class,'studio_article'])->name('studio.article');
     Route::post('/email', [ViewController::class, 'email'])->name('email');

@@ -10,12 +10,12 @@
 
   <div class="content px-8 md:px-48  py-8 md:py-24 bg-[#1B1B1B]">
     <div class="flex flex-col md:flex-row">
-      <img src="{{asset('front/images/ekip/aslihan.jpg')}}" alt="Aslıhan Kaya" class="rounded-2xl basis-1/4" style="object-fit: cover;">
-      <div class="flex flex-col gap-8 w-full basis-3/4 w-full px-8 md:px-24 py-8 md:py-24">
+      <img src="{{asset('storage/peoples/'.$people->image)}}" alt="Aslıhan Kaya" class="rounded-2xl basis-1/4">
+      <div class="flex flex-col gap-8  basis-3/4 w-full px-8 md:px-24 py-8 md:py-24">
         <h3 class="text-2xl text-[#BE1724]">{{$people->name}}</h3>
         <span class="text-white font-medium">{{$people->rank}}</span>
         <p class="text-white">
-          {{strip_tags($people->about)}}
+          {!!strip_tags($people->about)!!}
         </p>
       </div>
 

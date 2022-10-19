@@ -190,23 +190,23 @@
                     </div>
                 </div>
                 <div class="w-100"
-                    style="width: 100%; height:100%; position: fixed; top:55%; left:50%; z-index:500; backdrop-filter:blur(5px); transform: translate(-50%,-50%); display:none"
+                    style="width: 100%; height:100%; position: fixed; top:50%; left:50%; z-index:500; backdrop-filter:blur(5px); transform: translate(-50%,-50%); display:none"
                     id="desc">
                     <div
-                        style="width:70%;  margin: 10rem auto; border-radius:6px; background:#515151; color:#fff; padding:2rem;">
+                       id="terms"  class="md:w-full" style="width:70%;  margin: 10rem auto; border-radius:6px; background:#515151; color:#fff; padding:2rem;">
                         <div class="header" style="padding:.5rem; margin-bottom:.5rem;">
                             <h1 style="text-align: center; font-size:18px;">Kullanım Şartları</h1>
                         </div>
                         <div class="body"
                             style="padding:1rem; border: 1px solid #ffff;  overflow-y:scroll; height:20rem; overflow:overlay; ">
                             <p>
-                                {{ $setting->terms }}
+                                {!!$setting->terms!!}
                             </p>
                         </div>
                         <br>
                         <div style="text-align: center">
                             <button
-                                style="padding: .6rem 1.2rem; border:1px solid #ffff; margin: 1rem auto: text-align:center; margin-right:auto;"
+                                style="padding: .9rem 1.2rem; border:1px solid #ffff; border-radius:4px; margin: 1rem auto: text-align:center; margin-right:auto;"
                                 id="close">Başvuru
                                 Ekranında Dön</button>
 
@@ -214,7 +214,7 @@
                     </div>
                 </div>
                 <div
-                    style="width: 100%; height:100%; position: fixed; top:70%; left:50%; z-index:500; backdrop-filter:blur(5px); transform: translate(-50%,-50%); {{ Session::has('send') ? '' : 'display:none'}} ">
+                    style="width: 100%; height:100%; position: fixed; top:50%; left:50%; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:500; backdrop-filter:blur(5px); transform: translate(-50%,-50%); {{ Session::has('send') ? '' : 'display:none'}} ">
                     <div class="w-success" id="success"
                         style="width: 80% !important; margin:2rem auto; padding:2rem; background:#BE1724; color:#fff; border-radius:6px; text-align:center;">
                         <h1 style="font-size: 20px; text-align:center; margin-bottom:2rem;">Başvuru Yapıldı</h1>
@@ -222,7 +222,7 @@
                             sürede dönüş yapılacaktır.
                         </p>
                         <a href="{{route('index')}}"
-                            style="padding: .6rem 1.2rem; border:1px solid #ffff; margin: 1rem auto: text-align:center; margin-right:auto;"
+                            style="padding: .9rem 1.2rem; border:1px solid #ffff; margin: 1rem auto: text-align:center; margin-right:auto;"
                             id="close">Anasayfaya Dön</a>
                     </div>
                 </div>
@@ -238,14 +238,14 @@
             </form>
         </div>
     </div>
-    <div class="px-28 py-14 bg-[#242424]">
+    <div class=" py-14 bg-[#242424]" style="margin-top: 5rem;" style="padding: 30rem !important;">
         <div class="flex flex-col md:flex-row justify-between items-center">
             <img src="{{ asset('front/images/egitim-suresi.svg') }}" alt="">
             <ul class="list-disc">
-                <li class="text-white pt-4">Eğitimler 4 ay teorik ve pratik eğitim, 4 ay staj olarak planlanmaktadır.</li>
-                <li class="text-white pt-4">Eğitimler 160 saat Temel ve Pratik Eğitim + 4 Ay Staj olarak planlanmaktadır.
+                <li class="text-white pt-4 " style="margin: 1rem;">Eğitimler 4 ay teorik ve pratik eğitim, 4 ay staj olarak planlanmaktadır.</li>
+                <li class="text-white pt-4 " style="margin: 1rem;">Eğitimler 160 saat Temel ve Pratik Eğitim + 4 Ay Staj olarak planlanmaktadır.
                 </li>
-                <li class="text-white pt-4">Eğitimler 52 Saat Temel ve Pratik Eğitim + Staj olarak planlanmaktadır.</li>
+                <li class="text-white pt-4 " style="margin: 1rem;">Eğitimler 52 Saat Temel ve Pratik Eğitim + Staj olarak planlanmaktadır.</li>
             </ul>
         </div>
     </div>

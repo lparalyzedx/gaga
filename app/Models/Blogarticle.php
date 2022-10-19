@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +10,7 @@ class Blogarticle extends Model
 {
     use HasFactory;
     protected $guarded = ['_token','_method'];
+    protected $dates = ['created_at','updated_at'];
 
     public function category()
     {
@@ -23,5 +25,10 @@ class Blogarticle extends Model
     public function images()
     {
         return $this->image()->where('type',1);
+    }
+
+    public function date($date)
+    {
+        return Carbon::parse($date)->format('Y.m.D');
     }
 }

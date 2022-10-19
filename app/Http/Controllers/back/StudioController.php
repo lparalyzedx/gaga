@@ -23,7 +23,8 @@ class StudioController extends Controller
     public function index()
     {
         $articles = StudioArticle::with('category')->orderBy('id', 'DESC')->get();
-        return view('back.pages.studio.index', compact('articles'));
+        $article = StudioArticle::whereStatus(1)->orderBy('id','DESC')->first();
+        return view('back.pages.studio.index', compact('articles','article'));
     }
 
     /**
@@ -115,7 +116,7 @@ class StudioController extends Controller
      */
     public function edit($id)
     {
-        $article = StudioArticle::find($id) ?? abort(404);
+        $article = StudioArticle::whereId($id)->first() ?? abort(404);
         $categories = Studiocategorie::orderBy('id', 'DESC')->get();
         return view('back.pages.studio.edit', compact('article', 'categories'));
     }
@@ -148,7 +149,7 @@ class StudioController extends Controller
                 $fileName = Str::slug($request->title, '-') . '-studio' . $sayac . now()->format('Y-m-d_H-i-s') . '.' . $extension;
                 Storage::putFileAs($path, $image, $fileName);
 
-                Articleimage::find($id)->update(
+                Articleimage::whereId($id)->update(
                     [
                         'image' => $fileName
                     ]
